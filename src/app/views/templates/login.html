@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acesso - F1 Database</title>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<!-- Bootstrap -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+    body {
+        background-color: #15151e; /* Grafite escuro F1 */
+        color: #ffffff;
+        font-family: 'Outfit', sans-serif;
+        padding-top: 100px;
+        min-height: 100vh;
+        background-image: radial-gradient(circle at 10% 20%, rgba(225, 6, 0, 0.1) 0%, transparent 40%),
+                          radial-gradient(circle at 90% 80%, rgba(225, 6, 0, 0.05) 0%, transparent 40%);
+    }
+
+    h1 {
+        color: #e10600; /* Vermelho F1 */
+        text-align: center;
+        margin-bottom: 5px;
+        font-weight: 700;
+        letter-spacing: -1px;
+    }
+    
+    .subtitle {
+        text-align: center;
+        color: #9090a2;
+        margin-bottom: 35px;
+        font-size: 1.1rem;
+    }
+
+    .navbar {
+        background-color: #1f1f27 !important;
+        border-bottom: 3px solid #e10600;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+
+    .navbar-brand {
+        color: #ffffff !important;
+        font-weight: 700;
+        font-size: 1.4rem;
+        letter-spacing: -0.5px;
+    }
+    
+    .navbar-brand span {
+        color: #e10600;
+    }
+
+    /* Card do formulário */
+    .form-card {
+        max-width: 420px;
+        margin: auto;
+        background: #1f1f27;
+        padding: 40px 35px;
+        border-radius: 16px;
+        box-shadow: 0px 10px 30px rgba(0,0,0,0.5);
+        border: 1px solid #2d2d3a;
+        transition: transform 0.3s ease;
+    }
+    
+    .form-card:hover {
+        transform: translateY(-5px);
+    }
+
+    label {
+        font-weight: 600;
+        color: #c8c8d8;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .form-control {
+        border-radius: 8px !important;
+        border: 1px solid #3d3d4e !important;
+        background-color: #15151e !important;
+        color: #ffffff !important;
+        padding: 12px 15px;
+        height: auto;
+    }
+
+    .form-control:focus {
+        border-color: #e10600 !important;
+        box-shadow: 0 0 8px rgba(225, 6, 0, 0.4) !important;
+    }
+
+    .btn-f1 {
+        background-color: #e10600;
+        border-color: #e10600;
+        color: #ffffff;
+        font-weight: 700;
+        padding: 12px;
+        border-radius: 8px;
+        width: 100%;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.2s ease;
+        margin-top: 10px;
+    }
+
+    .btn-f1:hover {
+        background-color: #b80500;
+        border-color: #b80500;
+        color: #ffffff;
+        box-shadow: 0 0 15px rgba(225, 6, 0, 0.4);
+    }
+    
+    .alert-danger {
+        background-color: rgba(225, 6, 0, 0.15);
+        border-color: #e10600;
+        color: #ffffff;
+        border-radius: 8px;
+        font-size: 0.9rem;
+    }
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="/">F1<span>Database</span> 🏎️</a>
+  </div>
+</nav>
+
+<div class="container">
+    <!-- TÍTULO -->
+    <h1>Acesso ao Sistema</h1>
+    <div class="subtitle">Insira suas credenciais da Fórmula 1</div>
+
+    <!-- CARD DO FORMULÁRIO -->
+    <div class="form-card">
+        
+        {% if has_error %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fa-solid fa-triangle-exclamation mr-2"></i> Credenciais incorretas ou usuário inválido.
+            <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endif %}
+
+        <form action="/validaBDUsuarios" method="post">
+            <div class="form-group">
+                <label for="login">Login de Usuário</label>
+                <input class="form-control" type="text" id="login" name="login" placeholder="Ex: admin, hamilton_d, ferrari_c" required autocomplete="username">
+            </div>
+
+            <div class="form-group mb-4">
+                <label for="senha">Senha</label>
+                <input class="form-control" type="password" id="senha" name="senha" placeholder="Sua senha" required autocomplete="current-password">
+            </div>
+
+            <button type="submit" class="btn btn-f1">Entrar no Cockpit</button>
+        </form>
+    </div>
+</div>
+
+<!-- SCRIPTS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+</body>
+</html>

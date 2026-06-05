@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin - F1 Database</title>
+
+<!-- Google Fonts & Styles -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+    body {
+        background-color: #15151e;
+        color: #ffffff;
+        font-family: 'Outfit', sans-serif;
+        padding-top: 90px;
+        min-height: 100vh;
+    }
+
+    .navbar {
+        background-color: #1f1f27 !important;
+        border-bottom: 3px solid #e10600;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+
+    .navbar-brand {
+        color: #ffffff !important;
+        font-weight: 700;
+        font-size: 1.4rem;
+    }
+
+    .navbar-brand span { color: #e10600; }
+
+    .nav-link {
+        color: #c8c8d8 !important;
+        font-weight: 600;
+        margin-left: 10px;
+    }
+
+    .nav-link:hover { color: #e10600 !important; }
+
+    .nav-link.active {
+        color: #ffffff !important;
+        border-bottom: 2px solid #e10600;
+    }
+
+    h2 {
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 30px;
+        border-left: 5px solid #e10600;
+        padding-left: 15px;
+    }
+
+    /* Cards de Estatísticas */
+    .stat-card {
+        background-color: #1f1f27;
+        border: 1px solid #2d2d3a;
+        border-radius: 12px;
+        padding: 25px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(225,6,0,0.15);
+        border-color: #e10600;
+    }
+
+    .stat-icon { font-size: 2.5rem; color: #e10600; margin-bottom: 15px; }
+    .stat-number { font-size: 2rem; font-weight: 700; color: #ffffff; margin-bottom: 5px; }
+    .stat-label { font-size: 0.9rem; color: #9090a2; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* Cards de Ação */
+    .action-card {
+        background-color: #1f1f27;
+        border: 1px solid #2d2d3a;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .action-title { font-size: 1.3rem; font-weight: 700; color: #ffffff; margin-bottom: 15px; }
+    .action-desc { color: #9090a2; font-size: 0.95rem; margin-bottom: 25px; }
+
+    .btn-f1-outline {
+        border: 2px solid #e10600;
+        color: #ffffff;
+        font-weight: 700;
+        text-transform: uppercase;
+        border-radius: 8px;
+        padding: 10px 20px;
+        letter-spacing: 0.5px;
+        transition: all 0.2s ease;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-f1-outline:hover {
+        background-color: #e10600;
+        color: #ffffff;
+        box-shadow: 0 0 10px rgba(225,6,0,0.3);
+        text-decoration: none;
+    }
+
+    /* Seções de temporada */
+    .season-section {
+        background-color: #1f1f27;
+        border: 1px solid #2d2d3a;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .season-section-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 18px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .season-badge {
+        background: linear-gradient(135deg, #e10600, #a00400);
+        color: #fff;
+        font-size: 0.8rem;
+        font-weight: 700;
+        padding: 3px 10px;
+        border-radius: 20px;
+        letter-spacing: 0.5px;
+    }
+
+    .f1-table { color: #ffffff; width: 100%; margin-bottom: 0; }
+
+    .f1-table thead th {
+        border-top: none;
+        border-bottom: 2px solid #2d2d3a;
+        color: #9090a2;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.78rem;
+        letter-spacing: 0.5px;
+        padding: 10px 12px;
+    }
+
+    .f1-table td {
+        border-top: 1px solid #2d2d3a;
+        vertical-align: middle;
+        padding: 10px 12px;
+        font-size: 0.93rem;
+    }
+
+    .f1-table tbody tr:hover { background-color: rgba(255, 255, 255, 0.03); }
+
+    .rank-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        font-weight: 700;
+        font-size: 0.8rem;
+        flex-shrink: 0;
+    }
+
+    .rank-1 { background: #FFD700; color: #1a1a1a; }
+    .rank-2 { background: #C0C0C0; color: #1a1a1a; }
+    .rank-3 { background: #CD7F32; color: #fff; }
+    .rank-n { background: #2d2d3a; color: #9090a2; }
+
+    .pts-badge {
+        background-color: rgba(225,6,0,0.15);
+        color: #ff4444;
+        border: 1px solid rgba(225,6,0,0.3);
+        border-radius: 6px;
+        padding: 2px 8px;
+        font-weight: 700;
+        font-size: 0.9rem;
+    }
+
+    .win-badge {
+        background-color: rgba(255,215,0,0.12);
+        color: #FFD700;
+        border: 1px solid rgba(255,215,0,0.25);
+        border-radius: 6px;
+        padding: 2px 8px;
+        font-weight: 600;
+        font-size: 0.82rem;
+    }
+
+    .round-num { color: #9090a2; font-size: 0.8rem; font-weight: 600; }
+
+    .table-scroll {
+        max-height: 400px;
+        overflow-y: auto;
+        border-radius: 8px;
+    }
+
+    .table-scroll::-webkit-scrollbar { width: 6px; }
+    .table-scroll::-webkit-scrollbar-track { background: #15151e; }
+    .table-scroll::-webkit-scrollbar-thumb { background: #3d3d4e; border-radius: 3px; }
+
+    .empty-state { text-align: center; padding: 30px; color: #9090a2; }
+
+    /* Identificação do usuário */
+    .user-welcome-card {
+        background: linear-gradient(135deg, #1f1f27 0%, #242430 100%);
+        border: 1px solid #2d2d3a;
+        border-left: 4px solid #e10600;
+        border-radius: 12px;
+        padding: 22px 28px;
+        margin-bottom: 32px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    }
+
+    .user-avatar {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #e10600, #a00400);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #fff;
+        flex-shrink: 0;
+        box-shadow: 0 0 16px rgba(225,6,0,0.35);
+    }
+
+    .user-info { flex: 1; }
+
+    .user-greeting {
+        font-size: 0.82rem;
+        color: #9090a2;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 3px;
+    }
+
+    .user-name {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 6px;
+        line-height: 1.2;
+    }
+
+    .admin-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(225,6,0,0.12);
+        border: 1px solid rgba(225,6,0,0.35);
+        color: #ff4444;
+        font-size: 0.78rem;
+        font-weight: 700;
+        padding: 4px 12px;
+        border-radius: 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+    }
+
+    .navbar-user-info {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 12px;
+        background: rgba(225,6,0,0.08);
+        border: 1px solid rgba(225,6,0,0.2);
+        border-radius: 20px;
+        margin-left: 10px;
+    }
+
+    .navbar-user-info .nav-username {
+        color: #ffffff !important;
+        font-weight: 700;
+        font-size: 0.88rem;
+    }
+
+    .navbar-user-info .nav-role {
+        color: #e10600 !important;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">F1<span>Database</span> 🏎️</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" href="/admin/dashboard">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/relatorios/r1">Relatórios</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/cadastro/escuderia">Cadastrar Escuderia</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/cadastro/piloto">Cadastrar Piloto</a>
+        </li>
+        <li class="nav-item">
+          <div class="navbar-user-info">
+            <i class="fa-solid fa-shield-halved" style="color:#e10600;font-size:0.9rem;"></i>
+            <span class="nav-username">{{ session.usuario_logado }}</span>
+            <span class="nav-role">Admin</span>
+          </div>
+        </li>
+        <li class="nav-item ml-2">
+          <a class="nav-link text-danger" href="/logout"><i class="fa-solid fa-power-off mr-1"></i> Sair</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <h2>Painel Administrativo</h2>
+
+    <!-- CARD DE BOAS-VINDAS DO ADMIN -->
+    <div class="user-welcome-card">
+        <div class="user-avatar">
+            {{ session.usuario_logado[0] | upper }}
+        </div>
+        <div class="user-info">
+            <div class="user-greeting">Bem-vindo de volta</div>
+            <div class="user-name">{{ session.usuario_logado | capitalize }}</div>
+            <span class="admin-badge">
+                <i class="fa-solid fa-shield-halved"></i>
+                Administrador do Sistema
+            </span>
+        </div>
+        <div class="text-right d-none d-md-block" style="color:#9090a2;font-size:0.85rem;">
+            <i class="fa-solid fa-clock mr-1"></i>
+            Acesso total ao sistema
+        </div>
+    </div>
+
+    <!-- ESTATÍSTICAS GERAIS -->
+    <div class="row mb-5">
+        <div class="col-md-2 col-sm-6 mb-4">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-helmet-safety"></i></div>
+                <div class="stat-number">{{ stats.pilotos }}</div>
+                <div class="stat-label">Pilotos</div>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-6 mb-4">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-car-side"></i></div>
+                <div class="stat-number">{{ stats.escuderias }}</div>
+                <div class="stat-label">Escuderias</div>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-6 mb-4">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-calendar-days"></i></div>
+                <div class="stat-number">{{ stats.temporadas }}</div>
+                <div class="stat-label">Temporadas</div>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-6 mb-4">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-flag-checkered"></i></div>
+                <div class="stat-number">{{ stats.corridas }}</div>
+                <div class="stat-label">Corridas</div>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-6 mb-4">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-road"></i></div>
+                <div class="stat-number">{{ stats.circuitos }}</div>
+                <div class="stat-label">Circuitos</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SEÇÃO: TEMPORADA MAIS RECENTE -->
+    <h2>Temporada {{ stats.temporada_recente }}</h2>
+
+    <!-- 2. CORRIDAS DA TEMPORADA MAIS RECENTE -->
+    <div class="season-section">
+        <div class="season-section-title">
+            <i class="fa-solid fa-flag-checkered" style="color:#e10600;"></i>
+            Corridas da Temporada
+            <span class="season-badge">{{ stats.temporada_recente }}</span>
+            <small class="text-white-50 ml-auto" style="font-size:0.85rem;font-weight:400;">{{ corridas_recentes | length }} corridas</small>
+        </div>
+        {% if corridas_recentes %}
+        <div class="table-scroll">
+            <table class="f1-table table">
+                <thead>
+                    <tr>
+                        <th>Rd</th>
+                        <th>Corrida</th>
+                        <th>Circuito</th>
+                        <th class="text-center">Data</th>
+                        <th class="text-center">Horário</th>
+                        <th class="text-center">Voltas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in corridas_recentes %}
+                    <tr>
+                        <td><span class="round-num">R{{ r.round }}</span></td>
+                        <td><strong>{{ r.nome }}</strong></td>
+                        <td>{{ r.circuito }}</td>
+                        <td class="text-center">{{ r.data }}</td>
+                        <td class="text-center">{{ r.hora if r.hora != 'N/A' else '—' }}</td>
+                        <td class="text-center">
+                            {% if r.voltas > 0 %}
+                                <span class="pts-badge">{{ r.voltas }}</span>
+                            {% else %}
+                                <span class="text-white-50">—</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="empty-state"><i class="fa-solid fa-circle-info mr-2"></i>Nenhuma corrida encontrada para a temporada mais recente.</div>
+        {% endif %}
+    </div>
+
+    <!-- 3 & 4. ESCUDERIAS E PILOTOS COM PONTOS -->
+    <div class="row mb-4">
+        <!-- 3. ESCUDERIAS -->
+        <div class="col-md-6 mb-4">
+            <div class="season-section h-100">
+                <div class="season-section-title">
+                    <i class="fa-solid fa-car-side" style="color:#e10600;"></i>
+                    Escuderias — Pontos
+                    <span class="season-badge">{{ stats.temporada_recente }}</span>
+                </div>
+                {% if escuderias_recentes %}
+                <div class="table-scroll">
+                    <table class="f1-table table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Escuderia</th>
+                                <th class="text-center">Pts</th>
+                                <th class="text-center">Vitórias</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for e in escuderias_recentes %}
+                            <tr>
+                                <td>
+                                    {% if loop.index == 1 %}<span class="rank-badge rank-1">1</span>
+                                    {% elif loop.index == 2 %}<span class="rank-badge rank-2">2</span>
+                                    {% elif loop.index == 3 %}<span class="rank-badge rank-3">3</span>
+                                    {% else %}<span class="rank-badge rank-n">{{ loop.index }}</span>{% endif %}
+                                </td>
+                                <td><strong>{{ e.nome }}</strong></td>
+                                <td class="text-center"><span class="pts-badge">{{ e.pontos | int }}</span></td>
+                                <td class="text-center">
+                                    {% if e.vitorias > 0 %}<span class="win-badge"><i class="fa-solid fa-trophy mr-1"></i>{{ e.vitorias }}</span>
+                                    {% else %}<span class="text-white-50">—</span>{% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="empty-state"><i class="fa-solid fa-circle-info mr-2"></i>Nenhuma escuderia com pontos encontrada.</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- 4. PILOTOS -->
+        <div class="col-md-6 mb-4">
+            <div class="season-section h-100">
+                <div class="season-section-title">
+                    <i class="fa-solid fa-helmet-safety" style="color:#e10600;"></i>
+                    Pilotos — Pontos
+                    <span class="season-badge">{{ stats.temporada_recente }}</span>
+                </div>
+                {% if pilotos_recentes %}
+                <div class="table-scroll">
+                    <table class="f1-table table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Piloto</th>
+                                <th>Escuderia</th>
+                                <th class="text-center">Pts</th>
+                                <th class="text-center">Vit.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for p in pilotos_recentes %}
+                            <tr>
+                                <td>
+                                    {% if loop.index == 1 %}<span class="rank-badge rank-1">1</span>
+                                    {% elif loop.index == 2 %}<span class="rank-badge rank-2">2</span>
+                                    {% elif loop.index == 3 %}<span class="rank-badge rank-3">3</span>
+                                    {% else %}<span class="rank-badge rank-n">{{ loop.index }}</span>{% endif %}
+                                </td>
+                                <td><strong>{{ p.nome }}</strong></td>
+                                <td style="font-size:0.85rem;color:#9090a2;">{{ p.escuderia }}</td>
+                                <td class="text-center"><span class="pts-badge">{{ p.pontos | int }}</span></td>
+                                <td class="text-center">
+                                    {% if p.vitorias > 0 %}<span class="win-badge"><i class="fa-solid fa-trophy mr-1"></i>{{ p.vitorias }}</span>
+                                    {% else %}<span class="text-white-50">—</span>{% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="empty-state"><i class="fa-solid fa-circle-info mr-2"></i>Nenhum piloto com pontos encontrado.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- AÇÕES E RELATÓRIOS -->
+    <h2>Operações Disponíveis</h2>
+    <div class="row mb-5">
+        <div class="col-md-6 mb-4">
+            <div class="action-card">
+                <div>
+                    <div class="action-title"><i class="fa-solid fa-folder-plus text-danger mr-2"></i> Cadastros F1</div>
+                    <p class="action-desc">Cadastre novos pilotos ou escuderias no banco de dados. Os usuários correspondentes serão gerados automaticamente na tabela USERS com as credenciais padrões.</p>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <a href="/admin/cadastro/escuderia" class="btn-f1-outline mr-2 w-50">Nova Escuderia</a>
+                    <a href="/admin/cadastro/piloto" class="btn-f1-outline ml-2 w-50">Novo Piloto</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="action-card">
+                <div>
+                    <div class="action-title"><i class="fa-solid fa-chart-line text-danger mr-2"></i> Relatórios Administrativos</div>
+                    <p class="action-desc">Consulte relatórios gerenciais e estatísticas avançadas da base:</p>
+                    <ul class="text-white-50 pl-3">
+                        <li>R1 — Quantidade de resultados por status de corrida.</li>
+                        <li>R2 — Aeroportos brasileiros a no máximo 100km das cidades brasileiras de circuitos.</li>
+                        <li>R3 — Relatório hierárquico estruturado de corridas e circuitos.</li>
+                    </ul>
+                </div>
+                <a href="/admin/relatorios/r1" class="btn-f1-outline">Acessar Relatórios</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SCRIPTS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+</body>
+</html>

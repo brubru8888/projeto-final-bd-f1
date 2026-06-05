@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Escuderia - F1 Database</title>
+
+<!-- Google Fonts & Styles -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+    body {
+        background-color: #15151e;
+        color: #ffffff;
+        font-family: 'Outfit', sans-serif;
+        padding-top: 90px;
+        min-height: 100vh;
+    }
+
+    .navbar {
+        background-color: #1f1f27 !important;
+        border-bottom: 3px solid #e10600;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+
+    .navbar-brand {
+        color: #ffffff !important;
+        font-weight: 700;
+        font-size: 1.4rem;
+    }
+    
+    .navbar-brand span {
+        color: #e10600;
+    }
+    
+    .nav-link {
+        color: #c8c8d8 !important;
+        font-weight: 600;
+        margin-left: 10px;
+    }
+    
+    .nav-link:hover {
+        color: #e10600 !important;
+    }
+
+    .nav-link.active {
+        color: #ffffff !important;
+        border-bottom: 2px solid #e10600;
+    }
+
+    h2 {
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 30px;
+        border-left: 5px solid #e10600;
+        padding-left: 15px;
+    }
+
+    /* Cards de Estatísticas */
+    .stat-card {
+        background-color: #1f1f27;
+        border: 1px solid #2d2d3a;
+        border-radius: 12px;
+        padding: 25px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(225,6,0,0.15);
+        border-color: #e10600;
+    }
+
+    .stat-icon {
+        font-size: 2.5rem;
+        color: #e10600;
+        margin-bottom: 15px;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 5px;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        color: #9090a2;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Cards de Ação */
+    .action-card {
+        background-color: #1f1f27;
+        border: 1px solid #2d2d3a;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .action-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 15px;
+    }
+
+    .action-desc {
+        color: #9090a2;
+        font-size: 0.95rem;
+        margin-bottom: 25px;
+    }
+
+    .btn-f1-outline {
+        border: 2px solid #e10600;
+        color: #ffffff;
+        font-weight: 700;
+        text-transform: uppercase;
+        border-radius: 8px;
+        padding: 10px 20px;
+        letter-spacing: 0.5px;
+        transition: all 0.2s ease;
+        text-align: center;
+        text-decoration: none;
+    }
+
+    .btn-f1-outline:hover {
+        background-color: #e10600;
+        color: #ffffff;
+        box-shadow: 0 0 10px rgba(225,6,0,0.3);
+    }
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">F1<span>Database</span> 🏎️</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" href="/escuderia/dashboard">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/escuderia/relatorios">Relatórios</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/escuderia/consulta/piloto">Consultar Piloto</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/escuderia/upload/pilotos">Importar Lote</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-danger" href="/logout"><i class="fa-solid fa-power-off mr-1"></i> Sair</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <h2>Painel da Escuderia: <span class="text-danger">{{ session.usuario_logado[:-2] | capitalize }}</span></h2>
+    
+    <!-- ESTATÍSTICAS -->
+    <div class="row mb-5">
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-trophy"></i></div>
+                <div class="stat-number">{{ stats.vitorias }}</div>
+                <div class="stat-label">Vitórias Totais</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+                <div class="stat-number">{{ stats.qtd_pilotos }}</div>
+                <div class="stat-label">Pilotos Diferentes</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-calendar-days"></i></div>
+                <div class="stat-number">{{ stats.primeiro_ano }}</div>
+                <div class="stat-label">Primeira Temporada</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-calendar-check"></i></div>
+                <div class="stat-number">{{ stats.ultimo_ano }}</div>
+                <div class="stat-label">Última Temporada</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AÇÕES E RELATÓRIOS -->
+    <h2>Operações da Escuderia</h2>
+    <div class="row mb-5">
+        <div class="col-md-6 mb-4">
+            <div class="action-card">
+                <div>
+                    <div class="action-title"><i class="fa-solid fa-helmet-safety text-danger mr-2"></i> Gestão de Pilotos</div>
+                    <p class="action-desc">Busque pilotos pelo sobrenome na base global ou importe novos pilotos em lote através de um arquivo de texto (CSV/TSV).</p>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <a href="/escuderia/consulta/piloto" class="btn-f1-outline mr-2 w-50">Buscar Piloto</a>
+                    <a href="/escuderia/upload/pilotos" class="btn-f1-outline ml-2 w-50">Upload Lote</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="action-card">
+                <div>
+                    <div class="action-title"><i class="fa-solid fa-chart-pie text-danger mr-2"></i> Relatórios de Performance</div>
+                    <p class="action-desc">Consulte estatísticas exclusivas da sua escuderia:</p>
+                    <ul class="text-white-50 pl-3">
+                        <li>R4 — Vitórias por Piloto (histórico de primeiros lugares dos seus pilotos).</li>
+                        <li>R5 — Status da Escuderia (contagem de status de todas as participações).</li>
+                    </ul>
+                </div>
+                <a href="/escuderia/relatorios" class="btn-f1-outline">Acessar Relatórios</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SCRIPTS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+</body>
+</html>

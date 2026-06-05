@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cadastrar Piloto - F1 Database</title>
+
+<!-- Google Fonts & Styles -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+    body {
+        background-color: #15151e;
+        color: #ffffff;
+        font-family: 'Outfit', sans-serif;
+        padding-top: 90px;
+        min-height: 100vh;
+    }
+
+    .navbar {
+        background-color: #1f1f27 !important;
+        border-bottom: 3px solid #e10600;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+
+    .navbar-brand {
+        color: #ffffff !important;
+        font-weight: 700;
+        font-size: 1.4rem;
+    }
+    
+    .navbar-brand span {
+        color: #e10600;
+    }
+    
+    .nav-link {
+        color: #c8c8d8 !important;
+        font-weight: 600;
+        margin-left: 10px;
+    }
+    
+    .nav-link:hover {
+        color: #e10600 !important;
+    }
+
+    .nav-link.active {
+        color: #ffffff !important;
+        border-bottom: 2px solid #e10600;
+    }
+
+    .navbar-user-info {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 12px;
+        background: rgba(225,6,0,0.08);
+        border: 1px solid rgba(225,6,0,0.2);
+        border-radius: 20px;
+        margin-left: 10px;
+    }
+    .navbar-user-info .nav-username { color: #ffffff !important; font-weight: 700; font-size: 0.88rem; }
+    .navbar-user-info .nav-role { color: #e10600 !important; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
+
+    h2 {
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 25px;
+        border-left: 5px solid #e10600;
+        padding-left: 15px;
+    }
+
+    .form-card {
+        background-color: #1f1f27;
+        border: 1px solid #2d2d3a;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        max-width: 600px;
+        margin: auto;
+    }
+
+    label {
+        font-weight: 600;
+        color: #c8c8d8;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .form-control {
+        border-radius: 8px !important;
+        border: 1px solid #3d3d4e !important;
+        background-color: #15151e !important;
+        color: #ffffff !important;
+        padding: 10px 15px;
+        height: auto;
+    }
+
+    .form-control:focus {
+        border-color: #e10600 !important;
+        box-shadow: 0 0 8px rgba(225, 6, 0, 0.4) !important;
+    }
+
+    select.form-control option {
+        background-color: #1f1f27;
+        color: #ffffff;
+    }
+
+    .btn-f1 {
+        background-color: #e10600;
+        border-color: #e10600;
+        color: #ffffff;
+        font-weight: 700;
+        text-transform: uppercase;
+        border-radius: 8px;
+        padding: 12px;
+        width: 100%;
+        margin-top: 15px;
+    }
+
+    .btn-f1:hover {
+        background-color: #b80500;
+        border-color: #b80500;
+        color: #ffffff;
+        box-shadow: 0 0 10px rgba(225, 6, 0, 0.3);
+    }
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="/admin/dashboard">F1<span>Database</span> 🏎️</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/dashboard">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/relatorios/r1">Relatórios</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/cadastro/escuderia">Cadastrar Escuderia</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="/admin/cadastro/piloto">Cadastrar Piloto</a>
+        </li>
+        <li class="nav-item">
+          <div class="navbar-user-info">
+            <i class="fa-solid fa-shield-halved" style="color:#e10600;font-size:0.9rem;"></i>
+            <span class="nav-username">{{ session.usuario_logado }}</span>
+            <span class="nav-role">Admin</span>
+          </div>
+        </li>
+        <li class="nav-item ml-2">
+          <a class="nav-link text-danger" href="/logout"><i class="fa-solid fa-power-off mr-1"></i> Sair</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+    
+    <div class="form-card">
+        <h2>Cadastrar Novo Piloto</h2>
+        <p class="text-white-50 mb-4">Insira os dados do piloto. Ao salvar, uma credencial em USERS será gerada com o login <strong>referência_d</strong> e a senha padrão igual à <strong>referência</strong>.</p>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <form action="/admin/cadastro/piloto" method="POST">
+            <div class="form-group">
+                <label for="driver_ref">Referência (Login base)</label>
+                <input type="text" class="form-control" id="driver_ref" name="driver_ref" placeholder="Ex: senna (sem espaços e letras minúsculas)" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="given_name">Nome</label>
+                <input type="text" class="form-control" id="given_name" name="given_name" placeholder="Ex: Ayrton" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="family_name">Sobrenome</label>
+                <input type="text" class="form-control" id="family_name" name="family_name" placeholder="Ex: Senna" required>
+            </div>
+
+            <div class="form-group">
+                <label for="date_of_birth">Data de Nascimento</label>
+                <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" required>
+            </div>
+
+            <div class="form-group">
+                <label for="country_id">Nacionalidade / País</label>
+                <select class="form-control" id="country_id" name="country_id" required>
+                    <option value="" disabled selected>Selecione o País...</option>
+                    {% for c in countries %}
+                    <option value="{{ c.id }}">{{ c.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-f1">Salvar e Registrar Piloto</button>
+        </form>
+    </div>
+</div>
+
+<!-- SCRIPTS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+</body>
+</html>
