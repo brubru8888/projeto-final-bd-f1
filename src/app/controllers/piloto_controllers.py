@@ -7,18 +7,31 @@ class PilotoControllers:
         pass
 
     def dashboard(self):
+        """Renderiza a página principal (dashboard) do Piloto"""
         def view():
+            driver_id = session.get('id_original')
+            if not driver_id:
+                return redirect('/login')
+
             dao = Piloto_dao(connection_pool)
-            driver_id = session.get("id_original")
-            
-            years = dao.get_years(driver_id)
-            details = dao.get_dashboard_details(driver_id)
-            
-            return render_template(
-                "dashboard_piloto.html", 
-                years=years, 
-                details=details
-            )
+            try:
+                years = dao.get_years(driver_id)
+                details = dao.get_dashboard_details(driver_id)
+                info_user = dao.get_piloto_info(driver_id)
+                return render_template(
+                    "dashboard_piloto.html",
+                    years=years,
+                    details=details,
+                    info_user=info_user
+                )
+            except Exception as e:
+                print(f"Erro no controller piloto: {e}")
+                return render_template(
+                    "dashboard_piloto.html",
+                    years={'primeiro_ano': 'N/A', 'ultimo_ano': 'N/A'},
+                    details=[],
+                    info_user={'nome': 'Desconhecido', 'escuderia': 'Desconhecida'}
+                )
         return view
 
     def relatorios(self):

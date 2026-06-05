@@ -16,7 +16,8 @@ class EscuderiaControllers:
             
             # Busca dados do dashboard no BD
             stats = dao.get_dashboard(constructor_id)
-            return render_template("dashboard_escuderia.html", stats=stats)
+            info_user = dao.get_escuderia_info(constructor_id)
+            return render_template("dashboard_escuderia.html", stats=stats, info_user=info_user)
         return view
 
     def relatorios(self):

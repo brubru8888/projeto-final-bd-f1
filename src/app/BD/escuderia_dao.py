@@ -26,6 +26,23 @@ class Escuderia_dao:
             if conn:
                 self._db_pool.putconn(conn)
 
+    def get_escuderia_info(self, constructor_id):
+        """Retorna as informações da escuderia para a UI"""
+        conn = None
+        try:
+            conn = self._db_pool.getconn()
+            cursor = conn.cursor()
+            cursor.execute("SELECT name FROM constructors WHERE id = %s", (constructor_id,))
+            row = cursor.fetchone()
+            cursor.close()
+            return {'nome': row[0]} if row else {'nome': 'Desconhecida'}
+        except Exception as e:
+            print(f"Erro ao buscar info da escuderia {constructor_id}: {e}")
+            return {'nome': 'Erro'}
+        finally:
+            if conn:
+                self._db_pool.putconn(conn)
+
     def get_r4_vitorias_pilotos(self, constructor_id):
         """R4: Lista vitórias por piloto da escuderia logada"""
         conn = None

@@ -18,8 +18,41 @@ class Piloto_dao:
                 }
             return {'primeiro_ano': 'N/A', 'ultimo_ano': 'N/A'}
         except Exception as e:
-            print(f"Erro ao obter anos do piloto {driver_id}: {e}")
+            print(f"Erro ao buscar anos de participação do piloto {driver_id}: {e}")
             return {'primeiro_ano': 'N/A', 'ultimo_ano': 'N/A'}
+        finally:
+            if conn:
+                self._db_pool.putconn(conn)
+
+    def get_piloto_info(self, driver_id):
+        """Retorna as informações do piloto para a UI"""
+        conn = None
+        try:
+            conn = self._db_pool.getconn()
+            cursor = conn.cursor()
+            
+            # Buscar nome do piloto
+            cursor.execute("SELECT given_name || ' ' || family_name FROM drivers WHERE id = %s", (driver_id,))
+            nome_piloto = cursor.fetchone()
+            nome_piloto = nome_piloto[0] if nome_piloto else 'Desconhecido'
+            
+            # Buscar a escuderia mais recente pelo histórico de corridas
+            cursor.execute('''
+                SELECT c.name 
+                FROM results res
+                JOIN races rc ON res.race_id = rc.id
+                JOIN constructors c ON res.constructor_id = c.id
+                WHERE res.driver_id = %s
+                ORDER BY rc.race_date DESC LIMIT 1
+            ''', (driver_id,))
+            escuderia_recente = cursor.fetchone()
+            escuderia = escuderia_recente[0] if escuderia_recente else 'Sem Escuderia'
+            
+            cursor.close()
+            return {'nome': nome_piloto, 'escuderia': escuderia}
+        except Exception as e:
+            print(f"Erro ao buscar info do piloto {driver_id}: {e}")
+            return {'nome': 'Erro', 'escuderia': 'Erro'}
         finally:
             if conn:
                 self._db_pool.putconn(conn)

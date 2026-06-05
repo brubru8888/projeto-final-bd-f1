@@ -140,6 +140,66 @@
         color: #ffffff;
         box-shadow: 0 0 10px rgba(225,6,0,0.3);
     }
+    /* Identificação do usuário */
+    .user-welcome-card {
+        background: linear-gradient(135deg, #1f1f27 0%, #242430 100%);
+        border: 1px solid #2d2d3a;
+        border-left: 4px solid #e10600;
+        border-radius: 12px;
+        padding: 22px 28px;
+        margin-bottom: 32px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    }
+
+    .user-avatar {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #e10600, #a00400);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #fff;
+        flex-shrink: 0;
+        box-shadow: 0 0 16px rgba(225,6,0,0.35);
+    }
+
+    .user-info { flex: 1; }
+
+    .user-greeting {
+        font-size: 0.82rem;
+        color: #9090a2;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+
+    .user-name {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 6px;
+        line-height: 1.2;
+    }
+
+    .admin-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(225,6,0,0.12);
+        border: 1px solid rgba(225,6,0,0.35);
+        color: #ff4444;
+        font-size: 0.78rem;
+        font-weight: 700;
+        padding: 4px 12px;
+        border-radius: 20px;
+    }
 </style>
 </head>
 
@@ -153,6 +213,9 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <div class="navbar-user-info" style="color: #fff; background: rgba(255, 255, 255, 0.1); padding: 0.5rem 1rem; border-radius: 20px; font-weight: 500; font-size: 0.9rem; margin-right: 1.5rem; display: flex; align-items: center; gap: 0.5rem; letter-spacing: 0.5px;">
+          🏎️ {{ info_user.nome }} &middot; PILOTO ({{ info_user.escuderia }})
+        </div>
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link active" href="/piloto/dashboard">Dashboard</a>
@@ -170,7 +233,26 @@
 
 <div class="container">
     
-    <h2>Cockpit do Piloto: <span class="text-danger">{{ session.usuario_logado[:-2] | capitalize }}</span></h2>
+    <h2>Cockpit do Piloto</h2>
+
+    <!-- CARD DE BOAS-VINDAS DO PILOTO -->
+    <div class="user-welcome-card">
+        <div class="user-avatar">
+            {{ info_user.nome[0] | upper }}
+        </div>
+        <div class="user-info">
+            <div class="user-greeting">Bem-vindo de volta</div>
+            <div class="user-name">{{ info_user.nome }}</div>
+            <span class="admin-badge">
+                <i class="fa-solid fa-helmet-safety"></i>
+                Piloto da Escuderia {{ info_user.escuderia }}
+            </span>
+        </div>
+        <div class="text-right d-none d-md-block" style="color:#9090a2;font-size:0.85rem;">
+            <i class="fa-solid fa-clock mr-1"></i>
+            Acesso ao Painel
+        </div>
+    </div>
     
     <!-- ANOS DE ATUAÇÃO -->
     <div class="row mb-4 justify-content-center">
