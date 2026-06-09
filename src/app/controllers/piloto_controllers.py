@@ -41,10 +41,12 @@ class PilotoControllers:
             
             r6_data = dao.get_r6_pontos_ano(driver_id)
             r7_data = dao.get_r7_status_piloto(driver_id)
+            info_user = dao.get_piloto_info(driver_id)
             
             return render_template(
                 "relatorios_piloto.html", 
                 r6_data=r6_data, 
-                r7_data=r7_data
+                r7_data=r7_data,
+                info_user=info_user
             )
         return view

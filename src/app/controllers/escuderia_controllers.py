@@ -27,30 +27,41 @@ class EscuderiaControllers:
             
             r4_data = dao.get_r4_vitorias_pilotos(constructor_id)
             r5_data = dao.get_r5_status_escuderia(constructor_id)
+            stats = dao.get_dashboard(constructor_id)
+            info_user = dao.get_escuderia_info(constructor_id)
             
             return render_template(
                 "relatorios_escuderia.html", 
                 r4_data=r4_data, 
-                r5_data=r5_data
+                r5_data=r5_data,
+                stats=stats,
+                info_user=info_user
             )
         return view
 
     def consultar_piloto(self):
         def view():
             dao = Escuderia_dao(connection_pool)
+            constructor_id = session.get("id_original")
             sobrenome = request.args.get("sobrenome", "").strip()
             pilotos = []
             
             if sobrenome:
-                pilotos = dao.search_drivers_by_family_name(sobrenome)
+                pilotos = dao.search_drivers_by_family_name(sobrenome, constructor_id)
+            
+            stats = dao.get_dashboard(constructor_id)
+            info_user = dao.get_escuderia_info(constructor_id)
                 
-            return render_template("consulta_piloto.html", pilotos=pilotos, sobrenome=sobrenome)
+            return render_template("consulta_piloto.html", pilotos=pilotos, sobrenome=sobrenome, stats=stats, info_user=info_user)
         return view
 
     def upload_pilotos(self):
         def view():
             dao = Escuderia_dao(connection_pool)
             admin_dao = Admin_dao(connection_pool)
+            constructor_id = session.get("id_original")
+            stats = dao.get_dashboard(constructor_id)
+            info_user = dao.get_escuderia_info(constructor_id)
             
             if request.method == "POST":
                 file = request.files.get("file")
@@ -107,12 +118,14 @@ class EscuderiaControllers:
                     return render_template(
                         "upload_resultados.html", 
                         sucessos=sucessos, 
-                        falhas=falhas
+                        falhas=falhas,
+                        stats=stats,
+                        info_user=info_user
                     )
                     
                 except Exception as e:
                     flash(f"Erro ao processar o arquivo: {e}", "danger")
                     return redirect(request.url)
             
-            return render_template("upload_pilotos.html")
+            return render_template("upload_pilotos.html", stats=stats, info_user=info_user)
         return view

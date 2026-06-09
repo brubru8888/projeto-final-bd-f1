@@ -313,6 +313,32 @@
 
     <!-- ABA R3 -->
     {% if active_tab == 'r3' %}
+    <div class="card-f1 mb-4">
+        <h4 class="mb-4 text-danger"><i class="fa-solid fa-users-gear mr-2"></i> R3 — Escuderias e Quantidade de Pilotos</h4>
+        <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nome da Escuderia</th>
+                        <th class="text-center">Pilotos Associados (Histórico)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for esc in report_data.escuderias %}
+                    <tr>
+                        <td><strong>{{ esc.nome }}</strong></td>
+                        <td class="text-center"><span class="badge badge-secondary p-2">{{ esc.qtd_pilotos }} Pilotos</span></td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="2" class="text-center">Nenhuma escuderia encontrada.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <div class="card-f1">
         <h4 class="mb-2 text-danger"><i class="fa-solid fa-sitemap mr-2"></i> R3 — Relatório Hierárquico de Corridas por Circuito</h4>
         

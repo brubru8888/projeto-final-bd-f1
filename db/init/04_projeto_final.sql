@@ -1,7 +1,10 @@
 -- EXTENSÃO PARA CRIPTOGRAFIA DE SENHAS
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
--- 1. TABELAS DO SISTEMA
+/*
+ * DDL: Tabelas de Sistema e Autenticação
+ * Armazena usuários do sistema (Admin, Escuderia, Piloto) e logs de acesso.
+ */
 CREATE TABLE USERS (
     userid SERIAL PRIMARY KEY,
     login VARCHAR(255) NOT NULL UNIQUE,
@@ -17,7 +20,14 @@ CREATE TABLE USERS_LOG (
     action_date TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
--- 2. TRIGGERS DE DUPLICIDADE DE LOGIN (BEFORE INSERT/UPDATE)
+-- Inserção do usuário Administrador padrão
+INSERT INTO USERS (login, password, tipo, id_original)
+VALUES ('admin', crypt('admin', gen_salt('bf', 8)), 'Admin', NULL);
+
+/*
+ * Triggers de Validação (BEFORE INSERT/UPDATE)
+ * Garante unicidade e formatação de logins para novos pilotos e escuderias.
+ */
 CREATE OR REPLACE FUNCTION trg_check_driver_login_duplicate()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -55,7 +65,10 @@ BEFORE INSERT OR UPDATE ON constructors
 FOR EACH ROW EXECUTE FUNCTION trg_check_constructor_login_duplicate();
 
 
--- 3. TRIGGERS DE SINCRONIZAÇÃO (AFTER INSERT/UPDATE)
+/*
+ * Triggers de Sincronização (AFTER INSERT/UPDATE)
+ * Espelha a criação de pilotos e escuderias na tabela USERS com senha inicial gerada (bcrypt).
+ */
 CREATE OR REPLACE FUNCTION trg_sync_driver_user()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -107,7 +120,11 @@ AFTER INSERT OR UPDATE ON constructors
 FOR EACH ROW EXECUTE FUNCTION trg_sync_constructor_user();
 
 
--- 4. FUNÇÃO DISTÂNCIA HAVERSINE (PARA AEROPORTOS)
+/*
+ * Função utilitária: Haversine Distance
+ * Calcula a distância em km entre duas coordenadas geográficas.
+ * Utilizada no processamento geográfico do R2.
+ */
 CREATE OR REPLACE FUNCTION haversine_distance(
     lat1 DOUBLE PRECISION, 
     lon1 DOUBLE PRECISION, 
@@ -131,9 +148,16 @@ END;
 $$ LANGUAGE plpgsql;
 
 
--- 5. FUNÇÕES E PROCEDURES DE DASHBOARD (REQUISITO 4)
+/*
+ * Bloco: Funções de agregação para dashboards analíticos.
+ * Otimizadas com subqueries correlacionadas para reduzir tráfego no pool de conexões.
+ */
 
--- Dashboard Escuderia
+/*
+ * Retorna KPIs sumarizados para o dashboard da escuderia logada.
+ * @param p_constructor_id ID da escuderia no esquema base.
+ * @return vitorias, quantidade de pilotos distintos, ano inicial e ano final.
+ */
 CREATE OR REPLACE FUNCTION get_escuderia_dashboard(p_constructor_id INT)
 RETURNS TABLE (
     vitorias BIGINT,
@@ -151,7 +175,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Dashboard Piloto - Anos de Competição
+/*
+ * Busca o intervalo de atuação (anos) de um piloto.
+ * @param p_driver_id ID do piloto no esquema base.
+ */
 CREATE OR REPLACE FUNCTION get_piloto_years(p_driver_id INT)
 RETURNS TABLE (
     primeiro_ano INT,
@@ -165,7 +192,11 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Dashboard Piloto - Desempenho por Ano e Circuito
+/*
+ * Agrega desempenho do piloto por temporada e circuito.
+ * @param p_driver_id ID do piloto.
+ * @return Tabela contendo ano, circuito, pontos, vitórias e participações.
+ */
 CREATE OR REPLACE FUNCTION get_piloto_dashboard_details(p_driver_id INT)
 RETURNS TABLE (
     ano INT,
@@ -193,9 +224,14 @@ END;
 $$ LANGUAGE plpgsql;
 
 
--- 6. VIEWS E FUNÇÕES DE RELATÓRIO (REQUISITO 5)
+/*
+ * Bloco: Rotinas para os relatórios gerenciais R1-R7.
+ * Implementadas via Views (quando estáticas) e Funções (quando parametrizadas).
+ */
 
--- Relatório 1 (Admin): Quantidade de resultados por status
+/*
+ * Relatório R1: Distribuição global de resultados agrupados por status (acidente, desclassificação, etc).
+ */
 CREATE OR REPLACE VIEW vw_relatorio_status AS
 SELECT st.status AS status_nome, COUNT(r.id) AS contagem
 FROM results r
@@ -203,7 +239,11 @@ JOIN status st ON r.status_id = st.id
 GROUP BY st.status
 ORDER BY contagem DESC;
 
--- Relatório 2 (Admin): Aeroportos brasileiros a no máximo 100km da cidade brasileira pesquisada
+/*
+ * Relatório R2: Busca aeroportos brasileiros próximos a uma cidade sede.
+ * Filtra aeroportos de médio e grande porte num raio de 100km via Haversine.
+ * @param p_cidade Nome da cidade base.
+ */
 
 CREATE OR REPLACE FUNCTION get_relatorio_aeroportos_proximos(p_cidade VARCHAR)
 RETURNS TABLE (
@@ -240,7 +280,11 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Relatório 3 (Admin): Relatório hierárquico em 3 níveis
+/*
+ * Relatório R3: Base de dados materializada (Views) para o relatório hierárquico.
+ * vw_relatorio_circuitos_voltas agrega dados em nível de circuito.
+ * vw_relatorio_corridas_detalhe detalha métricas por corrida.
+ */
 CREATE OR REPLACE VIEW vw_relatorio_circuitos_voltas AS
 SELECT
     c.id AS circuit_id,
@@ -272,7 +316,10 @@ JOIN seasons s ON rc.season_id = s.id
 LEFT JOIN results res ON res.race_id = rc.id  -- LEFT JOIN para incluir corridas sem resultados
 GROUP BY rc.circuit_id, rc.id, rc.race_name, s.year;
 
--- Dashboard Admin: Corridas da temporada mais recente
+/*
+ * Extrai dados consolidados das corridas da última temporada registrada no banco.
+ * Utilizado no dashboard macro do administrador.
+ */
 CREATE OR REPLACE FUNCTION get_dashboard_corridas_temporada_recente()
 RETURNS TABLE (
     corrida_nome TEXT,
@@ -304,7 +351,9 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Dashboard Admin: Escuderias com pontos na temporada mais recente
+/*
+ * Retorna o ranking de pontuação das escuderias na última temporada.
+ */
 CREATE OR REPLACE FUNCTION get_dashboard_escuderias_temporada_recente()
 RETURNS TABLE (
     escuderia_nome VARCHAR,
@@ -330,7 +379,9 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Dashboard Admin: Pilotos com pontos na temporada mais recente
+/*
+ * Retorna o ranking de pontuação dos pilotos na última temporada.
+ */
 CREATE OR REPLACE FUNCTION get_dashboard_pilotos_temporada_recente()
 RETURNS TABLE (
     piloto_nome TEXT,
@@ -359,7 +410,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Relatório 4 (Escuderia): Vitórias por piloto da escuderia
+/*
+ * Relatório R4: Agrega a quantidade de primeiros lugares conquistados por piloto para uma escuderia específica.
+ * @param p_constructor_id ID da escuderia solicitante.
+ */
 CREATE OR REPLACE FUNCTION get_relatorio_vitorias_pilotos(p_constructor_id INT)
 RETURNS TABLE (
     nome_completo TEXT,
@@ -379,7 +433,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Relatório 5 (Escuderia): Status da escuderia
+/*
+ * Relatório R5: Histórico de status (abandonos, acidentes, falhas mecânicas) de todos os carros da escuderia.
+ * @param p_constructor_id ID da escuderia solicitante.
+ */
 CREATE OR REPLACE FUNCTION get_relatorio_status_escuderia(p_constructor_id INT)
 RETURNS TABLE (
     status_nome TEXT,
@@ -398,7 +455,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Relatório 6 (Piloto): Pontos por ano do piloto
+/*
+ * Relatório R6: Cronologia de pontuação de um piloto específico.
+ * @param p_driver_id ID do piloto solicitante.
+ */
 CREATE OR REPLACE FUNCTION get_relatorio_pontos_piloto_ano(p_driver_id INT)
 RETURNS TABLE (
     ano INT,
@@ -422,7 +482,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Relatório 7 (Piloto): Status do piloto
+/*
+ * Relatório R7: Resumo de causas de abandono/sucesso (status) no histórico do piloto.
+ * @param p_driver_id ID do piloto solicitante.
+ */
 CREATE OR REPLACE FUNCTION get_relatorio_status_piloto(p_driver_id INT)
 RETURNS TABLE (
     status_nome TEXT,
@@ -442,11 +505,18 @@ END;
 $$ LANGUAGE plpgsql;
 
 
--- 7. ÍNDICES OTIMIZADOS
--- Otimização para R2 (Busca de cidades brasileiras)
+/*
+ * Bloco: Índices B-Tree para otimização de consultas e joins pesados.
+ * Foco nos filtros de relatórios (R2, R4, R5) e views de dashboard.
+ */
+/*
+ * Índice funcional e composto: Otimiza a busca case-insensitive de cidades brasileiras no R2.
+ */
 CREATE INDEX IF NOT EXISTS idx_cities_lower_name_country ON cities (lower(name), country_id);
 
--- Otimização para R4, R5, R6, R7 e dashboards (results e joins)
+/*
+ * Índices em FKs da tabela results para evitar seq scans massivos durante as agregações dos relatórios.
+ */
 CREATE INDEX IF NOT EXISTS idx_results_constructor_pos ON results (constructor_id, position);
 CREATE INDEX IF NOT EXISTS idx_results_driver_points ON results (driver_id, points);
 CREATE INDEX IF NOT EXISTS idx_results_race_id ON results (race_id);

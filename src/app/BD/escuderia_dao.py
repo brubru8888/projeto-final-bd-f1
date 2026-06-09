@@ -3,7 +3,9 @@ class Escuderia_dao:
         self._db_pool = db_pool
 
     def get_dashboard(self, constructor_id):
-        """Retorna estatísticas do dashboard da escuderia"""
+        """
+        Consulta o banco via get_escuderia_dashboard() para preencher os KPIs de sumário da escuderia (vitórias, total de pilotos e range de anos).
+        """
         conn = None
         try:
             conn = self._db_pool.getconn()
@@ -27,7 +29,9 @@ class Escuderia_dao:
                 self._db_pool.putconn(conn)
 
     def get_escuderia_info(self, constructor_id):
-        """Retorna as informações da escuderia para a UI"""
+        """
+        Recupera o record da escuderia na tabela constructors para o header da sessão.
+        """
         conn = None
         try:
             conn = self._db_pool.getconn()
@@ -44,7 +48,10 @@ class Escuderia_dao:
                 self._db_pool.putconn(conn)
 
     def get_r4_vitorias_pilotos(self, constructor_id):
-        """R4: Lista vitórias por piloto da escuderia logada"""
+        """
+        Executa rotina do relatório R4 invocando get_relatorio_vitorias_pilotos().
+        Agrega os pilotos da escuderia ordenados por quantidade de P1 (primeiro lugar).
+        """
         conn = None
         try:
             conn = self._db_pool.getconn()
@@ -61,7 +68,10 @@ class Escuderia_dao:
                 self._db_pool.putconn(conn)
 
     def get_r5_status_escuderia(self, constructor_id):
-        """R5: Lista status por quantidade da escuderia logada"""
+        """
+        Executa rotina do relatório R5 via get_relatorio_status_escuderia().
+        Mapeia os status das ocorrências do carro/piloto para a escuderia fornecida.
+        """
         conn = None
         try:
             conn = self._db_pool.getconn()
@@ -77,21 +87,23 @@ class Escuderia_dao:
             if conn:
                 self._db_pool.putconn(conn)
 
-    def search_drivers_by_family_name(self, family_name):
-        """Busca pilotos cujo sobrenome contenha a string pesquisada"""
+    def search_drivers_by_family_name(self, family_name, constructor_id):
+        """Busca pilotos cujo sobrenome contenha a string pesquisada e que já tenham corrido pela escuderia logada"""
         conn = None
         try:
             conn = self._db_pool.getconn()
             cursor = conn.cursor()
             query = """
-                SELECT d.id, d.driver_ref, d.given_name, d.family_name, d.date_of_birth, c.name
+                SELECT DISTINCT d.id, d.driver_ref, d.given_name, d.family_name, d.date_of_birth, c.name
                 FROM drivers d
                 LEFT JOIN countries c ON d.country_id = c.id
+                JOIN results res ON res.driver_id = d.id
                 WHERE lower(d.family_name) LIKE %s
+                  AND res.constructor_id = %s
                 ORDER BY d.family_name ASC, d.given_name ASC
             """
             search_param = f"%{family_name.lower()}%"
-            cursor.execute(query, (search_param,))
+            cursor.execute(query, (search_param, constructor_id))
             res = cursor.fetchall()
             cursor.close()
             return [{
@@ -112,12 +124,23 @@ class Escuderia_dao:
     def insert_driver_independent_transaction(self, ref, given_name, family_name, dob, country_id):
         """
         Insere um piloto em uma transação independente.
+        Verifica duplicidade de nome e sobrenome antes de inserir.
         Retorna (True, None) se sucesso, ou (False, mensagem_erro) se falha.
         """
         conn = None
         try:
             conn = self._db_pool.getconn()
             cursor = conn.cursor()
+            
+            # Verifica se já existe um piloto com o mesmo nome e sobrenome
+            cursor.execute(
+                "SELECT id FROM drivers WHERE lower(given_name) = lower(%s) AND lower(family_name) = lower(%s)",
+                (given_name, family_name)
+            )
+            if cursor.fetchone():
+                cursor.close()
+                return False, f"Um piloto chamado '{given_name} {family_name}' já existe na base de dados."
+
             cursor.execute(
                 """
                 INSERT INTO drivers (driver_ref, given_name, family_name, date_of_birth, country_id)

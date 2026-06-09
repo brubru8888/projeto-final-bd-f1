@@ -112,7 +112,10 @@ class Admin_dao:
                 self._db_pool.putconn(conn)
 
     def get_r1_status_report(self):
-        """R1: Retorna resultados por status via view"""
+        """
+        Executa a query da view vw_relatorio_status.
+        Agrega e retorna a volumetria de resultados por status de corrida.
+        """
         conn = None
         try:
             conn = self._db_pool.getconn()
@@ -129,7 +132,10 @@ class Admin_dao:
                 self._db_pool.putconn(conn)
 
     def get_r2_airports_report(self, city_name):
-        """R2: Busca aeroportos brasileiros próximos a 100km da cidade brasileira pesquisada"""
+        """
+        Invoca a function get_relatorio_aeroportos_proximos() do banco de dados.
+        Retorna aeroportos num raio de 100km utilizando cálculo de distância Haversine.
+        """
         conn = None
         try:
             conn = self._db_pool.getconn()
@@ -156,12 +162,28 @@ class Admin_dao:
                 self._db_pool.putconn(conn)
 
     def get_r3_hierarchy_report(self):
-        """R3: Relatório hierárquico em 3 níveis (Circuitos -> Corridas)"""
+        """
+        Gera um dicionário hierárquico (Circuitos -> Corridas) e a lista geral de Escuderias.
+        Faz junção de dados das views vw_relatorio_circuitos_voltas e vw_relatorio_corridas_detalhe.
+        """
         conn = None
         try:
             conn = self._db_pool.getconn()
             cursor = conn.cursor()
             
+            # Passo 0: Obter escuderias e quantidade de pilotos
+            cursor.execute(
+                """
+                SELECT c.name, COUNT(DISTINCT r.driver_id) AS qtd_pilotos
+                FROM constructors c
+                LEFT JOIN results r ON c.id = r.constructor_id
+                GROUP BY c.id, c.name
+                ORDER BY qtd_pilotos DESC, c.name ASC
+                """
+            )
+            escuderias_rows = cursor.fetchall()
+            escuderias = [{'nome': r[0], 'qtd_pilotos': r[1]} for r in escuderias_rows]
+
             # Passo 1: Obter total geral de corridas
             cursor.execute("SELECT COUNT(*) FROM races")
             total_corridas = cursor.fetchone()[0]
@@ -215,18 +237,22 @@ class Admin_dao:
                 })
                 
             return {
+                'escuderias': escuderias,
                 'total_corridas': total_corridas,
                 'circuitos': circuitos
             }
         except Exception as e:
             print(f"Erro no relatório R3: {e}")
-            return {'total_corridas': 0, 'circuitos': []}
+            return {'escuderias': [], 'total_corridas': 0, 'circuitos': []}
         finally:
             if conn:
                 self._db_pool.putconn(conn)
 
     def get_dashboard_corridas_recentes(self):
-        """Dashboard Admin: Corridas da temporada mais recente"""
+        """
+        Busca via stored function os detalhes das corridas pertencentes à última season registrada.
+        Utilizado na renderização principal do dashboard do administrador.
+        """
         conn = None
         try:
             conn = self._db_pool.getconn()
@@ -250,7 +276,9 @@ class Admin_dao:
                 self._db_pool.putconn(conn)
 
     def get_dashboard_escuderias_recentes(self):
-        """Dashboard Admin: Escuderias com pontos na temporada mais recente"""
+        """
+        Agrega vitórias e pontos das escuderias na última season.
+        """
         conn = None
         try:
             conn = self._db_pool.getconn()
@@ -271,7 +299,9 @@ class Admin_dao:
                 self._db_pool.putconn(conn)
 
     def get_dashboard_pilotos_recentes(self):
-        """Dashboard Admin: Pilotos com pontos na temporada mais recente"""
+        """
+        Agrega vitórias e pontos dos pilotos na última season.
+        """
         conn = None
         try:
             conn = self._db_pool.getconn()
