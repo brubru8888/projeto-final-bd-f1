@@ -23,7 +23,7 @@ class Piloto_dao:
                 }
             return {'primeiro_ano': 'N/A', 'ultimo_ano': 'N/A'}
         except Exception as e:
-            print(f"Erro ao buscar anos de participação do piloto {driver_id}: {e}\"")
+            print(f"Erro ao buscar anos de participação do piloto {driver_id}: {e}")
             return {'primeiro_ano': 'N/A', 'ultimo_ano': 'N/A'}
         finally:
             if conn:

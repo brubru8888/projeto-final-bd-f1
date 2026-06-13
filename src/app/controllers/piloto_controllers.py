@@ -16,7 +16,7 @@ class PilotoControllers:
         def view():
             driver_id = session.get('id_original')
             if not driver_id:
-                return redirect('/login')
+                return redirect('/')
 
             dao = Piloto_dao(connection_pool)
             try:

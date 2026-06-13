@@ -10,6 +10,7 @@ def seed_users():
     print("Iniciando seed de usuários...")
     conn = get_connection()
     cursor = conn.cursor()
+    conn_returned = False
     
     try:
         cursor.execute("SELECT COUNT(*) FROM USERS")
@@ -18,6 +19,7 @@ def seed_users():
             print(f"Seed ignorado: USERS já possui {total} registros.")
             cursor.close()
             return_connection(conn)
+            conn_returned = True
             return
         
         salt = bcrypt.gensalt(rounds=10)
@@ -76,8 +78,12 @@ def seed_users():
         print(f"Erro ao executar seed: {e}")
         raise e
     finally:
-        cursor.close()
-        return_connection(conn)
+        try:
+            cursor.close()
+        except Exception:
+            pass
+        if not conn_returned:
+            return_connection(conn)
 
 if __name__ == "__main__":
     seed_users()
