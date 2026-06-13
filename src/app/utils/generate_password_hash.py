@@ -1,38 +1,24 @@
-"""
-Script para gerar hash de senhas usando bcrypt
-Use este script para gerar hashes que podem ser inseridos diretamente no banco de dados
-"""
+"""Gera hash bcrypt para senhas."""
 import sys
 import os
 
-# Adiciona o diretório raiz ao path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 
 import bcrypt
 
 def generate_hash(password: str) -> str:
-    """
-    Gera hash bcrypt da senha
-    
-    Args:
-        password: Senha em texto plano
-        
-    Returns:
-        String com o hash da senha
-    """
     salt = bcrypt.gensalt(rounds=12)
     hashed = bcrypt.hashpw(password.encode('utf-8'), salt)
     return hashed.decode('utf-8')
 
 def main():
-    """Função principal para gerar hashes interativamente"""
+    """Gera hashes pela linha de comando."""
     print("=" * 60)
     print("GERADOR DE HASH DE SENHAS - Green Check")
     print("=" * 60)
     print()
     
     if len(sys.argv) > 1:
-        # Modo não-interativo: recebe senha como argumento
         senha = sys.argv[1]
         hash_senha = generate_hash(senha)
         print(f"Senha: {senha}")
@@ -41,7 +27,6 @@ def main():
         print("SQL para usar no INSERT:")
         print(f"'{hash_senha}'")
     else:
-        # Modo interativo
         print("Digite as senhas que deseja converter para hash.")
         print("Pressione Ctrl+C para sair.")
         print()

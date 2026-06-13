@@ -1,9 +1,7 @@
 import os
 from src.config.app import aplicacao
 
-# INICIALIZAR O SERVIDOR
 if __name__ == '__main__':
-    # Seed automático de usuários (admin + pilotos + escuderias)
     try:
         from src.app.utils.seed_users import seed_users
         seed_users()
