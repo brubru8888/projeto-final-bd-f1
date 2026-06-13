@@ -1,26 +1,19 @@
-"""
-Script de verificação de senhas no banco de dados
-Verifica se todas as senhas estão com hash bcrypt (não em texto plano)
-"""
+"""Verifica se as senhas do banco estão em bcrypt."""
 import sys
 import os
 
-# Adiciona o diretório raiz ao path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 
 from src.config.database import connection_pool
 
 def verificar_senhas():
-    """
-    Verifica se todas as senhas no banco de dados estão com hash bcrypt
-    """
+    """Confere se as senhas usam hash bcrypt."""
     conn = None
     
     try:
         conn = connection_pool.getconn()
         cursor = conn.cursor()
         
-        # Busca todos os usuários
         cursor.execute("SELECT cpf, email, senha FROM usuario")
         usuarios = cursor.fetchall()
         
@@ -31,7 +24,6 @@ def verificar_senhas():
         senhas_problema = []
         
         for cpf, email, senha_atual in usuarios:
-            # Verifica se a senha está em hash (bcrypt começa com $2b$ ou $2a$)
             if senha_atual.startswith('$2b$') or senha_atual.startswith('$2a$'):
                 senhas_ok += 1
                 print(f"✓ Usuário {email}: senha com hash válido")

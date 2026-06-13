@@ -2,7 +2,6 @@ import os
 import sys
 import bcrypt
 
-# Adiciona o diretório raiz ao python path para conseguir importar config
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
 
 from src.config.database import get_connection, return_connection
@@ -13,7 +12,6 @@ def seed_users():
     cursor = conn.cursor()
     
     try:
-        # Verificação rápida: se já existem usuários, não precisa re-sedar
         cursor.execute("SELECT COUNT(*) FROM USERS")
         total = cursor.fetchone()[0]
         if total > 100:
@@ -22,10 +20,8 @@ def seed_users():
             return_connection(conn)
             return
         
-        # Usa rounds=10 para ser mais rápido (ainda seguro)
         salt = bcrypt.gensalt(rounds=10)
         
-        # 1. Inserir Admin se não existir
         admin_login = "admin"
         admin_pass = "admin"
         hashed_admin_pass = bcrypt.hashpw(admin_pass.encode('utf-8'), salt).decode('utf-8')
@@ -36,7 +32,6 @@ def seed_users():
         )
         print("Usuário Admin processado.")
         
-        # 2. Obter todos os pilotos
         cursor.execute("SELECT id, driver_ref FROM drivers")
         drivers = cursor.fetchall()
         print(f"Encontrados {len(drivers)} pilotos. Processando senhas e inserindo em USERS...")
@@ -55,7 +50,6 @@ def seed_users():
             
         print("Todos os pilotos cadastrados em USERS.")
         
-        # 3. Obter todas as escuderias
         cursor.execute("SELECT id, constructor_ref FROM constructors")
         constructors = cursor.fetchall()
         print(f"Encontrados {len(constructors)} construtores. Processando senhas e inserindo em USERS...")
