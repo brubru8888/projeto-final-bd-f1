@@ -22,11 +22,21 @@ e oferece login, dashboards, relatórios e cadastros por perfil de usuário.
 ## Como rodar
 
 1. Abra o terminal na raiz do projeto.
-2. Garanta que o Docker Desktop esteja aberto e no contexto Linux:
+2. Garanta que o Docker esteja em execução. Se necessário, selecione o contexto correto para o seu sistema:
 
-```bash
-docker context use desktop-linux
-```
+   Você pode listar os contextos disponíveis com:
+   ```bash
+   docker context ls
+   ```
+
+   E selecionar o correto (geralmente `default` no Linux nativo, ou `desktop-linux` no Windows/macOS com Docker Desktop):
+   ```bash
+   # Para Linux nativo (padrão):
+   docker context use default
+
+   # Para Windows / macOS com Docker Desktop:
+   docker context use desktop-linux
+   ```
 
 3. Suba os containers:
 
@@ -34,15 +44,21 @@ docker context use desktop-linux
 docker compose up -d --build
 ```
 
-4. Na primeira execução, aguarde a carga do banco terminar. Ela pode levar alguns minutos.
-5. Verifique os logs se quiser acompanhar a inicialização:
+> [!TIP]
+> **Dica de Sincronização:** Se quiser que o terminal espere ativamente que todo o processo de inicialização do banco (importação de dados) e o seed de usuários na aplicação web (geração de senhas via bcrypt) terminem antes de liberar o prompt, você pode subir os contêineres usando a flag `--wait`:
+> ```bash
+> docker compose up -d --build --wait
+> ```
+> O comando ficará aguardando e só terminará exibindo `f1_web Healthy`, garantindo que o site já pode ser acessado de imediato.
+
+4. Verifique os logs se quiser acompanhar o progresso em tempo real:
 
 ```bash
 docker logs -f f1_db
 docker logs -f f1_web
 ```
 
-6. Quando o sistema estiver pronto, acesse:
+5. Quando o sistema estiver pronto, acesse:
 
 ```text
 http://localhost:3000
@@ -50,22 +66,16 @@ http://localhost:3000
 
 ## Como saber que já ficou pronto
 
-O site só deve responder depois que:
+Graças aos testes de saúde (`healthcheck`) configurados no arquivo `docker-compose.yml`, a aplicação web só aceitará conexões quando todo o banco de dados estiver estruturado e os usuários estiverem cadastrados.
 
-- o container `f1_db` estiver saudável;
-- o banco terminar a carga inicial;
-- o container `f1_web` subir sem erro;
-- a porta `3000` estiver disponível no navegador.
-
-Se a tela ficar em branco, der `ERR_EMPTY_RESPONSE` ou abrir antes da hora, espere mais um pouco e recarregue a página.
-
-Se preferir ver tudo no terminal na primeira vez, use:
+Você pode acompanhar o status de prontidão executando:
 
 ```bash
-docker compose up --build
+docker compose ps
 ```
 
-Sem o `-d`, você acompanha a inicialização até o sistema ficar pronto.
+* Enquanto o banco carrega os dados ou a web calcula os hashes de senha, o status da aplicação mostrará `(health: starting)`.
+* Assim que o site estiver disponível para uso, o status mudará para `(healthy)`.
 
 ## Credenciais de teste
 

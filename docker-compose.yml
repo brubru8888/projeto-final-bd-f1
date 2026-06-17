@@ -14,10 +14,10 @@ services:
       - ./db/init:/docker-entrypoint-initdb.d:z
       - ./dados:/dados:ro,z
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U f1_user -d formula1"]
-      interval: 5s
+      test: ["CMD-SHELL", "pg_isready -U f1_user -d formula1 && psql -U f1_user -d formula1 -c \"SELECT 1 FROM pg_tables WHERE tablename = 'users'\" | grep -q 1"]
+      interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 60
 
   web:
     build:
@@ -40,6 +40,11 @@ services:
       - .:/app:z
       - /app/__pycache__
     command: python server.py
+    healthcheck:
+      test: ["CMD-SHELL", "python -c 'import socket; s = socket.socket(); s.connect((\"localhost\", 3000))'"]
+      interval: 5s
+      timeout: 2s
+      retries: 20
 
 volumes:
   f1_db_data:

@@ -540,6 +540,10 @@ DROP TABLE IF EXISTS t1_city_groups;
 DROP TABLE IF EXISTS t1_cities_base;
 DROP TABLE IF EXISTS t1_link_metrics;
 
+-- Índices temporários para acelerar drasticamente a criação da base auxiliar das cidades e deduplicação
+CREATE INDEX IF NOT EXISTS idx_airports_city_id_temp ON airports (city_id);
+CREATE INDEX IF NOT EXISTS idx_circuits_city_id_temp ON circuits (city_id);
+
 /* ------------------------------------------------------------------------------------------------------------
    2.2. BASE AUXILIAR DAS CIDADES
 
@@ -644,6 +648,9 @@ SELECT
     ) AS filled_attribute_count
 FROM cities c
 WHERE COALESCE(NULLIF(c.ascii_name, ''), c.name) IS NOT NULL;
+
+-- Índice para acelerar a busca por duplicatas baseadas no grupo (país + nome relaxado)
+CREATE INDEX IF NOT EXISTS idx_t1_cities_base_group ON t1_cities_base (country_id, normalized_name_relaxed);
 
 /* ------------------------------------------------------------------------------------------------------------
    2.3. GRUPOS DE POSSÍVEIS DUPLICATAS
@@ -1243,6 +1250,11 @@ SELECT
     (SELECT COUNT(*) FROM cities)       AS cities_after,
     (SELECT COUNT(*) FROM airports)     AS airports_after,
     (SELECT COUNT(*) FROM circuits)     AS circuits_after;
+
+-- Limpeza dos índices temporários criados para otimização
+DROP INDEX IF EXISTS idx_airports_city_id_temp;
+DROP INDEX IF EXISTS idx_circuits_city_id_temp;
+DROP INDEX IF EXISTS idx_t1_cities_base_group;
 
 COMMIT;
 
