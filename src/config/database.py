@@ -8,9 +8,9 @@ import time
 DB_CONFIG = {
     'host': os.getenv('DB_HOST', 'db'),
     'port': int(os.getenv('DB_PORT', '5432')),
-    'user': os.getenv('DB_USER', 'arvore_user'),
-    'password': os.getenv('DB_PASSWORD', 'arvore_pass'),
-    'database': os.getenv('DB_NAME', 'arvore_urbana')
+    'user': os.getenv('DB_USER', 'f1_user'),
+    'password': os.getenv('DB_PASSWORD', 'f1_pass'),
+    'database': os.getenv('DB_NAME', 'formula1')
 }
 
 connection_pool = None

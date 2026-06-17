@@ -260,7 +260,7 @@ CREATE TEMP TABLE stg_cities (
 -- - /home/bruna/Documentos/Semestre 5°/Lab de BD/gitLabBD/T3/dados/ é o caminho local onde os arquivos estão armazenados (ajustar conforme necessário)
 
 -- Carregar dados da Fórmula 1 (F1) para staging
-\copy stg_circuits              FROM '/dados/circuits.csv'                 WITH (FORMAT csv, HEADER true, ENCODING 'LATIN1')
+\copy stg_circuits              FROM '/dados/circuits.csv'                 WITH (FORMAT csv, HEADER true)
 \copy stg_constructors          FROM '/dados/constructors.csv'             WITH (FORMAT csv, HEADER true)
 \copy stg_drivers               FROM '/dados/drivers.csv'                  WITH (FORMAT csv, HEADER true)
 \copy stg_races                 FROM '/dados/races.csv'                    WITH (FORMAT csv, HEADER true)
