@@ -44,12 +44,12 @@ e oferece login, dashboards, relatórios e cadastros por perfil de usuário.
 docker compose up -d --build
 ```
 
-> [!TIP]
-> **Dica de Sincronização:** Se quiser que o terminal espere ativamente que todo o processo de inicialização do banco (importação de dados) e o seed de usuários na aplicação web (geração de senhas via bcrypt) terminem antes de liberar o prompt, você pode subir os contêineres usando a flag `--wait`:
-> ```bash
-> docker compose up -d --build --wait
-> ```
-> O comando ficará aguardando e só terminará exibindo `f1_web Healthy`, garantindo que o site já pode ser acessado de imediato.
+Se quiser que o terminal espere ativamente que todo o processo de inicialização do banco (importação de dados) e o seed de usuários na aplicação web (geração de senhas via bcrypt) terminem antes de liberar o prompt, você pode subir os contêineres usando a flag `--wait`:
+```bash
+docker compose up -d --build --wait
+```
+O comando ficará aguardando e só terminará exibindo `f1_web Healthy`, garantindo que o site já pode ser acessado de imediato.
+
 
 4. Verifique os logs se quiser acompanhar o progresso em tempo real:
 
