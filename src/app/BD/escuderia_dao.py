@@ -118,6 +118,17 @@ class Escuderia_dao:
 
     def insert_driver_independent_transaction(self, ref, given_name, family_name, dob, country_id):
         """Insere um piloto em transação isolada."""
+        if not ref or not ref.strip():
+            return False, "A referencia do piloto (driver_ref) e obrigatoria."
+        if not given_name or not given_name.strip():
+            return False, "O nome do piloto (given_name) e obrigatorio."
+        if not family_name or not family_name.strip():
+            return False, "O sobrenome do piloto (family_name) e obrigatorio."
+        if not dob or not dob.strip():
+            return False, "A data de nascimento do piloto (date_of_birth) e obrigatoria."
+        if not country_id or not country_id.strip():
+            return False, "O pais do piloto (country_id) e obrigatorio."
+
         conn = None
         try:
             conn = self._db_pool.getconn()

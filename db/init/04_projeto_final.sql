@@ -31,6 +31,26 @@ VALUES ('admin', crypt('admin', gen_salt('bf', 8)), 'Admin', NULL);
 CREATE OR REPLACE FUNCTION trg_check_driver_login_duplicate()
 RETURNS TRIGGER AS $$
 BEGIN
+    IF NEW.driver_ref IS NULL OR btrim(NEW.driver_ref) = '' THEN
+        RAISE EXCEPTION 'Erro: A referencia do piloto (driver_ref) e obrigatoria';
+    END IF;
+
+    IF NEW.given_name IS NULL OR btrim(NEW.given_name) = '' THEN
+        RAISE EXCEPTION 'Erro: O nome do piloto (given_name) e obrigatorio';
+    END IF;
+
+    IF NEW.family_name IS NULL OR btrim(NEW.family_name) = '' THEN
+        RAISE EXCEPTION 'Erro: O sobrenome do piloto (family_name) e obrigatorio';
+    END IF;
+
+    IF NEW.date_of_birth IS NULL THEN
+        RAISE EXCEPTION 'Erro: A data de nascimento do piloto (date_of_birth) e obrigatoria';
+    END IF;
+
+    IF NEW.country_id IS NULL THEN
+        RAISE EXCEPTION 'Erro: O pais do piloto (country_id) e obrigatorio';
+    END IF;
+
     IF EXISTS (
         SELECT 1 FROM USERS 
         WHERE login = NEW.driver_ref || '_d' 
