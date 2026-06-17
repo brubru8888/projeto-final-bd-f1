@@ -443,11 +443,10 @@ BEGIN
     RETURN QUERY
     SELECT
         (d.given_name || ' ' || d.family_name) AS nome_completo,
-        COUNT(r.id) AS vitorias
+        SUM(CASE WHEN r.position = '1' THEN 1 ELSE 0 END)::BIGINT AS vitorias
     FROM results r
     JOIN drivers d ON r.driver_id = d.id
     WHERE r.constructor_id = p_constructor_id
-      AND r.position = '1'
     GROUP BY d.id, d.given_name, d.family_name
     ORDER BY vitorias DESC, nome_completo ASC;
 END;
