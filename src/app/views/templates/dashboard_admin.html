@@ -14,21 +14,21 @@
 
 <style>
     body {
-        background-color: #15151e;
-        color: #ffffff;
+        background-color: #f3f4f6;
+        color: #111827;
         font-family: 'Outfit', sans-serif;
         padding-top: 90px;
         min-height: 100vh;
     }
 
     .navbar {
-        background-color: #1f1f27 !important;
+        background-color: #ffffff !important;
         border-bottom: 3px solid #e10600;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
 
     .navbar-brand {
-        color: #ffffff !important;
+        color: #111827 !important;
         font-weight: 700;
         font-size: 1.4rem;
     }
@@ -36,7 +36,7 @@
     .navbar-brand span { color: #e10600; }
 
     .nav-link {
-        color: #c8c8d8 !important;
+        color: #374151 !important;
         font-weight: 600;
         margin-left: 10px;
     }
@@ -44,13 +44,13 @@
     .nav-link:hover { color: #e10600 !important; }
 
     .nav-link.active {
-        color: #ffffff !important;
+        color: #111827 !important;
         border-bottom: 2px solid #e10600;
     }
 
     h2 {
         font-weight: 700;
-        color: #ffffff;
+        color: #111827;
         margin-bottom: 30px;
         border-left: 5px solid #e10600;
         padding-left: 15px;
@@ -58,12 +58,12 @@
 
     /* Cards de Estatísticas */
     .stat-card {
-        background-color: #1f1f27;
-        border: 1px solid #2d2d3a;
+        background-color: #ffffff;
+        border: 1px solid #e5e7eb;
         border-radius: 12px;
         padding: 25px;
         text-align: center;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
@@ -74,28 +74,28 @@
     }
 
     .stat-icon { font-size: 2.5rem; color: #e10600; margin-bottom: 15px; }
-    .stat-number { font-size: 2rem; font-weight: 700; color: #ffffff; margin-bottom: 5px; }
-    .stat-label { font-size: 0.9rem; color: #9090a2; text-transform: uppercase; letter-spacing: 0.5px; }
+    .stat-number { font-size: 2rem; font-weight: 700; color: #111827; margin-bottom: 5px; }
+    .stat-label { font-size: 0.9rem; color: #4b5563; text-transform: uppercase; letter-spacing: 0.5px; }
 
     /* Cards de Ação */
     .action-card {
-        background-color: #1f1f27;
-        border: 1px solid #2d2d3a;
+        background-color: #ffffff;
+        border: 1px solid #e5e7eb;
         border-radius: 12px;
         padding: 30px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
     }
 
-    .action-title { font-size: 1.3rem; font-weight: 700; color: #ffffff; margin-bottom: 15px; }
-    .action-desc { color: #9090a2; font-size: 0.95rem; margin-bottom: 25px; }
+    .action-title { font-size: 1.3rem; font-weight: 700; color: #111827; margin-bottom: 15px; }
+    .action-desc { color: #4b5563; font-size: 0.95rem; margin-bottom: 25px; }
 
     .btn-f1-outline {
         border: 2px solid #e10600;
-        color: #ffffff;
+        color: #111827;
         font-weight: 700;
         text-transform: uppercase;
         border-radius: 8px;
@@ -107,8 +107,7 @@
         display: inline-block;
     }
 
-    .btn-f1-outline:hover {
-        background-color: #e10600;
+    .btn-f1-outline:hover { background-color: #e10600;
         color: #ffffff;
         box-shadow: 0 0 10px rgba(225,6,0,0.3);
         text-decoration: none;
@@ -116,18 +115,18 @@
 
     /* Seções de temporada */
     .season-section {
-        background-color: #1f1f27;
-        border: 1px solid #2d2d3a;
+        background-color: #ffffff;
+        border: 1px solid #e5e7eb;
         border-radius: 12px;
         padding: 25px;
         margin-bottom: 30px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     }
 
     .season-section-title {
         font-size: 1.1rem;
         font-weight: 700;
-        color: #ffffff;
+        color: #111827;
         margin-bottom: 18px;
         display: flex;
         align-items: center;
@@ -144,12 +143,12 @@
         letter-spacing: 0.5px;
     }
 
-    .f1-table { color: #ffffff; width: 100%; margin-bottom: 0; }
+    .f1-table { color: #111827; width: 100%; margin-bottom: 0; }
 
     .f1-table thead th {
         border-top: none;
-        border-bottom: 2px solid #2d2d3a;
-        color: #9090a2;
+        border-bottom: 2px solid #e5e7eb;
+        color: #4b5563;
         font-weight: 600;
         text-transform: uppercase;
         font-size: 0.78rem;
@@ -158,13 +157,13 @@
     }
 
     .f1-table td {
-        border-top: 1px solid #2d2d3a;
+        border-top: 1px solid #e5e7eb;
         vertical-align: middle;
         padding: 10px 12px;
         font-size: 0.93rem;
     }
 
-    .f1-table tbody tr:hover { background-color: rgba(255, 255, 255, 0.03); }
+    .f1-table tbody tr:hover { background-color: rgba(0,0,0,0.03); }
 
     .rank-badge {
         display: inline-flex;
@@ -181,11 +180,11 @@
     .rank-1 { background: #FFD700; color: #1a1a1a; }
     .rank-2 { background: #C0C0C0; color: #1a1a1a; }
     .rank-3 { background: #CD7F32; color: #fff; }
-    .rank-n { background: #2d2d3a; color: #9090a2; }
+    .rank-n { background: #2d2d3a; color: #4b5563; }
 
     .pts-badge {
-        background-color: rgba(225,6,0,0.15);
-        color: #ff4444;
+        background-color: rgba(225,6,0,0.08);
+        color: #e10600;
         border: 1px solid rgba(225,6,0,0.3);
         border-radius: 6px;
         padding: 2px 8px;
@@ -203,7 +202,7 @@
         font-size: 0.82rem;
     }
 
-    .round-num { color: #9090a2; font-size: 0.8rem; font-weight: 600; }
+    .round-num { color: #4b5563; font-size: 0.8rem; font-weight: 600; }
 
     .table-scroll {
         max-height: 400px;
@@ -212,15 +211,15 @@
     }
 
     .table-scroll::-webkit-scrollbar { width: 6px; }
-    .table-scroll::-webkit-scrollbar-track { background: #15151e; }
+    .table-scroll::-webkit-scrollbar-track { background: #f3f4f6; }
     .table-scroll::-webkit-scrollbar-thumb { background: #3d3d4e; border-radius: 3px; }
 
-    .empty-state { text-align: center; padding: 30px; color: #9090a2; }
+    .empty-state { text-align: center; padding: 30px; color: #4b5563; }
 
     /* Identificação do usuário */
     .user-welcome-card {
-        background: linear-gradient(135deg, #1f1f27 0%, #242430 100%);
-        border: 1px solid #2d2d3a;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
         border-left: 4px solid #e10600;
         border-radius: 12px;
         padding: 22px 28px;
@@ -228,7 +227,7 @@
         display: flex;
         align-items: center;
         gap: 20px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
     }
 
     .user-avatar {
@@ -250,7 +249,7 @@
 
     .user-greeting {
         font-size: 0.82rem;
-        color: #9090a2;
+        color: #4b5563;
         text-transform: uppercase;
         letter-spacing: 1px;
         margin-bottom: 3px;
@@ -259,7 +258,7 @@
     .user-name {
         font-size: 1.4rem;
         font-weight: 700;
-        color: #ffffff;
+        color: #111827;
         margin-bottom: 6px;
         line-height: 1.2;
     }
@@ -270,7 +269,7 @@
         gap: 6px;
         background: rgba(225,6,0,0.12);
         border: 1px solid rgba(225,6,0,0.35);
-        color: #ff4444;
+        color: #e10600;
         font-size: 0.78rem;
         font-weight: 700;
         padding: 4px 12px;
@@ -291,7 +290,7 @@
     }
 
     .navbar-user-info .nav-username {
-        color: #ffffff !important;
+        color: #111827 !important;
         font-weight: 700;
         font-size: 0.88rem;
     }
@@ -373,7 +372,7 @@
                 Administrador do Sistema
             </span>
         </div>
-        <div class="text-right d-none d-md-block" style="color:#9090a2;font-size:0.85rem;">
+        <div class="text-right d-none d-md-block" style="color: #4b5563;font-size:0.85rem;">
             <i class="fa-solid fa-clock mr-1"></i>
             Acesso total ao sistema
         </div>
@@ -427,7 +426,7 @@
             <i class="fa-solid fa-flag-checkered" style="color:#e10600;"></i>
             Corridas da Temporada
             <span class="season-badge">{{ stats.temporada_recente }}</span>
-            <small class="text-white-50 ml-auto" style="font-size:0.85rem;font-weight:400;">{{ corridas_recentes | length }} corridas</small>
+            <small class="text-muted ml-auto" style="font-size:0.85rem;font-weight:400;">{{ corridas_recentes | length }} corridas</small>
         </div>
         {% if corridas_recentes %}
         <div class="table-scroll">
@@ -454,7 +453,7 @@
                             {% if r.voltas > 0 %}
                                 <span class="pts-badge">{{ r.voltas }}</span>
                             {% else %}
-                                <span class="text-white-50">—</span>
+                                <span class="text-muted">—</span>
                             {% endif %}
                         </td>
                     </tr>
@@ -501,7 +500,7 @@
                                 <td class="text-center"><span class="pts-badge">{{ e.pontos | int }}</span></td>
                                 <td class="text-center">
                                     {% if e.vitorias > 0 %}<span class="win-badge"><i class="fa-solid fa-trophy mr-1"></i>{{ e.vitorias }}</span>
-                                    {% else %}<span class="text-white-50">—</span>{% endif %}
+                                    {% else %}<span class="text-muted">—</span>{% endif %}
                                 </td>
                             </tr>
                             {% endfor %}
@@ -544,11 +543,11 @@
                                     {% else %}<span class="rank-badge rank-n">{{ loop.index }}</span>{% endif %}
                                 </td>
                                 <td><strong>{{ p.nome }}</strong></td>
-                                <td style="font-size:0.85rem;color:#9090a2;">{{ p.escuderia }}</td>
+                                <td style="font-size:0.85rem;color: #4b5563;">{{ p.escuderia }}</td>
                                 <td class="text-center"><span class="pts-badge">{{ p.pontos | int }}</span></td>
                                 <td class="text-center">
                                     {% if p.vitorias > 0 %}<span class="win-badge"><i class="fa-solid fa-trophy mr-1"></i>{{ p.vitorias }}</span>
-                                    {% else %}<span class="text-white-50">—</span>{% endif %}
+                                    {% else %}<span class="text-muted">—</span>{% endif %}
                                 </td>
                             </tr>
                             {% endfor %}
@@ -582,7 +581,7 @@
                 <div>
                     <div class="action-title"><i class="fa-solid fa-chart-line text-danger mr-2"></i> Relatórios Administrativos</div>
                     <p class="action-desc">Consulte relatórios gerenciais e estatísticas avançadas da base:</p>
-                    <ul class="text-white-50 pl-3">
+                    <ul class="text-muted pl-3">
                         <li>R1 — Quantidade de resultados por status de corrida.</li>
                         <li>R2 — Aeroportos brasileiros a no máximo 100km das cidades brasileiras de circuitos.</li>
                         <li>R3 — Relatório hierárquico estruturado de corridas e circuitos.</li>

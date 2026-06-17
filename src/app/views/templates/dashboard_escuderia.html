@@ -14,21 +14,21 @@
 
 <style>
     body {
-        background-color: #15151e;
-        color: #ffffff;
+        background-color: #f3f4f6;
+        color: #111827;
         font-family: 'Outfit', sans-serif;
         padding-top: 90px;
         min-height: 100vh;
     }
 
     .navbar {
-        background-color: #1f1f27 !important;
+        background-color: #ffffff !important;
         border-bottom: 3px solid #e10600;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
 
     .navbar-brand {
-        color: #ffffff !important;
+        color: #111827 !important;
         font-weight: 700;
         font-size: 1.4rem;
     }
@@ -38,7 +38,7 @@
     }
     
     .nav-link {
-        color: #c8c8d8 !important;
+        color: #374151 !important;
         font-weight: 600;
         margin-left: 10px;
     }
@@ -48,13 +48,13 @@
     }
 
     .nav-link.active {
-        color: #ffffff !important;
+        color: #111827 !important;
         border-bottom: 2px solid #e10600;
     }
 
     h2 {
         font-weight: 700;
-        color: #ffffff;
+        color: #111827;
         margin-bottom: 30px;
         border-left: 5px solid #e10600;
         padding-left: 15px;
@@ -62,12 +62,12 @@
 
     /* Cards de Estatísticas */
     .stat-card {
-        background-color: #1f1f27;
-        border: 1px solid #2d2d3a;
+        background-color: #ffffff;
+        border: 1px solid #e5e7eb;
         border-radius: 12px;
         padding: 25px;
         text-align: center;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
@@ -86,24 +86,24 @@
     .stat-number {
         font-size: 2rem;
         font-weight: 700;
-        color: #ffffff;
+        color: #111827;
         margin-bottom: 5px;
     }
 
     .stat-label {
         font-size: 0.9rem;
-        color: #9090a2;
+        color: #4b5563;
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
 
     /* Cards de Ação */
     .action-card {
-        background-color: #1f1f27;
-        border: 1px solid #2d2d3a;
+        background-color: #ffffff;
+        border: 1px solid #e5e7eb;
         border-radius: 12px;
         padding: 30px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -113,19 +113,19 @@
     .action-title {
         font-size: 1.3rem;
         font-weight: 700;
-        color: #ffffff;
+        color: #111827;
         margin-bottom: 15px;
     }
 
     .action-desc {
-        color: #9090a2;
+        color: #4b5563;
         font-size: 0.95rem;
         margin-bottom: 25px;
     }
 
     .btn-f1-outline {
         border: 2px solid #e10600;
-        color: #ffffff;
+        color: #111827;
         font-weight: 700;
         text-transform: uppercase;
         border-radius: 8px;
@@ -136,15 +136,14 @@
         text-decoration: none;
     }
 
-    .btn-f1-outline:hover {
-        background-color: #e10600;
+    .btn-f1-outline:hover { background-color: #e10600;
         color: #ffffff;
         box-shadow: 0 0 10px rgba(225,6,0,0.3);
     }
     /* Identificação do usuário */
     .user-welcome-card {
-        background: linear-gradient(135deg, #1f1f27 0%, #242430 100%);
-        border: 1px solid #2d2d3a;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
         border-left: 4px solid #e10600;
         border-radius: 12px;
         padding: 22px 28px;
@@ -152,7 +151,7 @@
         display: flex;
         align-items: center;
         gap: 20px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
     }
 
     .user-avatar {
@@ -174,7 +173,7 @@
 
     .user-greeting {
         font-size: 0.82rem;
-        color: #9090a2;
+        color: #4b5563;
         text-transform: uppercase;
         letter-spacing: 1px;
         font-weight: 600;
@@ -184,7 +183,7 @@
     .user-name {
         font-size: 1.4rem;
         font-weight: 700;
-        color: #ffffff;
+        color: #111827;
         margin-bottom: 6px;
         line-height: 1.2;
     }
@@ -195,7 +194,7 @@
         gap: 6px;
         background: rgba(225,6,0,0.12);
         border: 1px solid rgba(225,6,0,0.35);
-        color: #ff4444;
+        color: #e10600;
         font-size: 0.78rem;
         font-weight: 700;
         padding: 4px 12px;
@@ -214,7 +213,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <div class="navbar-user-info" style="color: #fff; background: rgba(255, 255, 255, 0.1); padding: 0.5rem 1rem; border-radius: 20px; font-weight: 500; font-size: 0.9rem; margin-right: 1.5rem; display: flex; align-items: center; gap: 0.5rem; letter-spacing: 0.5px;">
+        <div class="navbar-user-info" style="color: #111827; background: rgba(0, 0, 0, 0.05); border: 1px solid rgba(0,0,0,0.1); padding: 0.5rem 1rem; border-radius: 20px; font-weight: 500; font-size: 0.9rem; margin-right: 1.5rem; display: flex; align-items: center; gap: 0.5rem; letter-spacing: 0.5px;">
           🏢 {{ info_user.nome }} &middot; ESCUDERIA ({{ stats.qtd_pilotos }} pilotos)
         </div>
       <ul class="navbar-nav">
@@ -268,7 +267,7 @@
                 Escuderia com {{ stats.qtd_pilotos }} piloto(s) associado(s)
             </span>
         </div>
-        <div class="text-right d-none d-md-block" style="color:#9090a2;font-size:0.85rem;">
+        <div class="text-right d-none d-md-block" style="color: #4b5563;font-size:0.85rem;">
             <i class="fa-solid fa-clock mr-1"></i>
             Acesso ao Painel
         </div>
@@ -326,7 +325,7 @@
                 <div>
                     <div class="action-title"><i class="fa-solid fa-chart-pie text-danger mr-2"></i> Relatórios de Performance</div>
                     <p class="action-desc">Consulte estatísticas exclusivas da sua escuderia:</p>
-                    <ul class="text-white-50 pl-3">
+                    <ul class="text-muted pl-3">
                         <li>R4 — Vitórias por Piloto (histórico de primeiros lugares dos seus pilotos).</li>
                         <li>R5 — Status da Escuderia (contagem de status de todas as participações).</li>
                     </ul>

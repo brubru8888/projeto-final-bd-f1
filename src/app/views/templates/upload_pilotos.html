@@ -14,21 +14,21 @@
 
 <style>
     body {
-        background-color: #15151e;
-        color: #ffffff;
+        background-color: #f3f4f6;
+        color: #111827;
         font-family: 'Outfit', sans-serif;
         padding-top: 90px;
         min-height: 100vh;
     }
 
     .navbar {
-        background-color: #1f1f27 !important;
+        background-color: #ffffff !important;
         border-bottom: 3px solid #e10600;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
 
     .navbar-brand {
-        color: #ffffff !important;
+        color: #111827 !important;
         font-weight: 700;
         font-size: 1.4rem;
     }
@@ -38,7 +38,7 @@
     }
     
     .nav-link {
-        color: #c8c8d8 !important;
+        color: #374151 !important;
         font-weight: 600;
         margin-left: 10px;
     }
@@ -48,49 +48,48 @@
     }
 
     .nav-link.active {
-        color: #ffffff !important;
+        color: #111827 !important;
         border-bottom: 2px solid #e10600;
     }
 
     h2 {
         font-weight: 700;
-        color: #ffffff;
+        color: #111827;
         margin-bottom: 25px;
         border-left: 5px solid #e10600;
         padding-left: 15px;
     }
 
     .card-f1 {
-        background-color: #1f1f27;
-        border: 1px solid #2d2d3a;
+        background-color: #ffffff;
+        border: 1px solid #e5e7eb;
         border-radius: 12px;
         padding: 30px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         max-width: 650px;
         margin: auto;
     }
 
     label {
         font-weight: 600;
-        color: #c8c8d8;
+        color: #374151;
         font-size: 0.9rem;
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
 
     .form-control-file {
-        background-color: #15151e;
+        background-color: #f3f4f6;
         border: 1px dashed #3d3d4e;
         border-radius: 8px;
         padding: 20px;
-        color: #c8c8d8;
+        color: #374151;
         width: 100%;
         text-align: center;
         cursor: pointer;
     }
 
-    .btn-f1 {
-        background-color: #e10600;
+    .btn-f1 { background-color: #e10600;
         border-color: #e10600;
         color: #ffffff;
         font-weight: 700;
@@ -101,8 +100,7 @@
         margin-top: 20px;
     }
 
-    .btn-f1:hover {
-        background-color: #b80500;
+    .btn-f1:hover { background-color: #b80500;
         border-color: #b80500;
         color: #ffffff;
         box-shadow: 0 0 10px rgba(225, 6, 0, 0.3);
@@ -127,7 +125,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <div class="navbar-user-info" style="color: #fff; background: rgba(255, 255, 255, 0.1); padding: 0.5rem 1rem; border-radius: 20px; font-weight: 500; font-size: 0.9rem; margin-right: 1.5rem; display: flex; align-items: center; gap: 0.5rem; letter-spacing: 0.5px;">
+        <div class="navbar-user-info" style="color: #111827; background: rgba(0, 0, 0, 0.05); border: 1px solid rgba(0,0,0,0.1); padding: 0.5rem 1rem; border-radius: 20px; font-weight: 500; font-size: 0.9rem; margin-right: 1.5rem; display: flex; align-items: center; gap: 0.5rem; letter-spacing: 0.5px;">
           🏢 {{ info_user.nome }} &middot; ESCUDERIA ({{ stats.qtd_pilotos }} pilotos)
         </div>
       <ul class="navbar-nav">
@@ -155,7 +153,7 @@
     
     <div class="card-f1">
         <h2>Importação de Pilotos em Lote</h2>
-        <p class="text-white-50 mb-4">Selecione um arquivo de texto formatado em CSV para realizar o cadastro em lote. Cada linha do arquivo é tratada de forma independente.</p>
+        <p class="text-muted mb-4">Selecione um arquivo de texto formatado em CSV para realizar o cadastro em lote. Cada linha do arquivo é tratada de forma independente.</p>
         
         {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
@@ -170,12 +168,12 @@
           {% endif %}
         {% endwith %}
 
-        <div class="alert alert-secondary bg-dark text-white-50 border-secondary mb-4">
-            <h6 class="text-white font-weight-bold"><i class="fa-solid fa-circle-info text-danger mr-2"></i> Formato Esperado do Arquivo (.csv):</h6>
+        <div class="alert alert-secondary border-secondary mb-4">
+            <h6 class="text-dark font-weight-bold"><i class="fa-solid fa-circle-info text-danger mr-2"></i> Formato Esperado do Arquivo (.csv):</h6>
             O arquivo deve conter cinco campos separados por vírgula em cada linha:<br>
             <code>driver_ref,given_name,family_name,date_of_birth,country_id</code><br><br>
             <strong>Exemplo:</strong><br>
-            <span class="text-white">drugovich,Felipe,Drugovich,2000-05-23,31</span>
+            <span class="text-dark">drugovich,Felipe,Drugovich,2000-05-23,31</span>
         </div>
 
         <form action="/escuderia/upload/pilotos" method="POST" enctype="multipart/form-data">

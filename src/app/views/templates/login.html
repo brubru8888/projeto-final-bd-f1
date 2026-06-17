@@ -17,13 +17,12 @@
 
 <style>
     body {
-        background-color: #15151e; /* Grafite escuro F1 */
-        color: #ffffff;
+        background-color: #f3f4f6; /* Grafite escuro F1 */
+        color: #111827;
         font-family: 'Outfit', sans-serif;
         padding-top: 100px;
         min-height: 100vh;
-        background-image: radial-gradient(circle at 10% 20%, rgba(225, 6, 0, 0.1) 0%, transparent 40%),
-                          radial-gradient(circle at 90% 80%, rgba(225, 6, 0, 0.05) 0%, transparent 40%);
+        background-image: radial-gradient(circle at 10% 20%, rgba(225, 6, 0, 0.03) 0%, transparent 40%), radial-gradient(circle at 90% 80%, rgba(225, 6, 0, 0.01) 0%, transparent 40%);
     }
 
     h1 {
@@ -36,19 +35,19 @@
     
     .subtitle {
         text-align: center;
-        color: #9090a2;
+        color: #4b5563;
         margin-bottom: 35px;
         font-size: 1.1rem;
     }
 
     .navbar {
-        background-color: #1f1f27 !important;
+        background-color: #ffffff !important;
         border-bottom: 3px solid #e10600;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
 
     .navbar-brand {
-        color: #ffffff !important;
+        color: #111827 !important;
         font-weight: 700;
         font-size: 1.4rem;
         letter-spacing: -0.5px;
@@ -62,11 +61,11 @@
     .form-card {
         max-width: 420px;
         margin: auto;
-        background: #1f1f27;
+        background: #ffffff;
         padding: 40px 35px;
         border-radius: 16px;
-        box-shadow: 0px 10px 30px rgba(0,0,0,0.5);
-        border: 1px solid #2d2d3a;
+        box-shadow: 0px 10px 30px rgba(0,0,0,0.05);
+        border: 1px solid #e5e7eb;
         transition: transform 0.3s ease;
     }
     
@@ -76,7 +75,7 @@
 
     label {
         font-weight: 600;
-        color: #c8c8d8;
+        color: #374151;
         font-size: 0.9rem;
         text-transform: uppercase;
         letter-spacing: 0.5px;
@@ -84,9 +83,9 @@
 
     .form-control {
         border-radius: 8px !important;
-        border: 1px solid #3d3d4e !important;
-        background-color: #15151e !important;
-        color: #ffffff !important;
+        border: 1px solid #d1d5db !important;
+        background-color: #ffffff !important;
+        color: #111827 !important;
         padding: 12px 15px;
         height: auto;
     }
@@ -96,8 +95,7 @@
         box-shadow: 0 0 8px rgba(225, 6, 0, 0.4) !important;
     }
 
-    .btn-f1 {
-        background-color: #e10600;
+    .btn-f1 { background-color: #e10600;
         border-color: #e10600;
         color: #ffffff;
         font-weight: 700;
@@ -110,8 +108,7 @@
         margin-top: 10px;
     }
 
-    .btn-f1:hover {
-        background-color: #b80500;
+    .btn-f1:hover { background-color: #b80500;
         border-color: #b80500;
         color: #ffffff;
         box-shadow: 0 0 15px rgba(225, 6, 0, 0.4);
@@ -120,7 +117,7 @@
     .alert-danger {
         background-color: rgba(225, 6, 0, 0.15);
         border-color: #e10600;
-        color: #ffffff;
+        color: #111827;
         border-radius: 8px;
         font-size: 0.9rem;
     }
@@ -148,7 +145,7 @@
         {% if has_error %}
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <i class="fa-solid fa-triangle-exclamation mr-2"></i> Credenciais incorretas ou usuário inválido.
-            <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close">
+            <button type="button" class="close text-dark" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>

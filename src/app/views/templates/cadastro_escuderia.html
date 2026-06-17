@@ -14,21 +14,21 @@
 
 <style>
     body {
-        background-color: #15151e;
-        color: #ffffff;
+        background-color: #f3f4f6;
+        color: #111827;
         font-family: 'Outfit', sans-serif;
         padding-top: 90px;
         min-height: 100vh;
     }
 
     .navbar {
-        background-color: #1f1f27 !important;
+        background-color: #ffffff !important;
         border-bottom: 3px solid #e10600;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
 
     .navbar-brand {
-        color: #ffffff !important;
+        color: #111827 !important;
         font-weight: 700;
         font-size: 1.4rem;
     }
@@ -38,7 +38,7 @@
     }
     
     .nav-link {
-        color: #c8c8d8 !important;
+        color: #374151 !important;
         font-weight: 600;
         margin-left: 10px;
     }
@@ -48,7 +48,7 @@
     }
 
     .nav-link.active {
-        color: #ffffff !important;
+        color: #111827 !important;
         border-bottom: 2px solid #e10600;
     }
 
@@ -62,30 +62,30 @@
         border-radius: 20px;
         margin-left: 10px;
     }
-    .navbar-user-info .nav-username { color: #ffffff !important; font-weight: 700; font-size: 0.88rem; }
+    .navbar-user-info .nav-username { color: #111827 !important; font-weight: 700; font-size: 0.88rem; }
     .navbar-user-info .nav-role { color: #e10600 !important; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
 
     h2 {
         font-weight: 700;
-        color: #ffffff;
+        color: #111827;
         margin-bottom: 25px;
         border-left: 5px solid #e10600;
         padding-left: 15px;
     }
 
     .form-card {
-        background-color: #1f1f27;
-        border: 1px solid #2d2d3a;
+        background-color: #ffffff;
+        border: 1px solid #e5e7eb;
         border-radius: 12px;
         padding: 30px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         max-width: 600px;
         margin: auto;
     }
 
     label {
         font-weight: 600;
-        color: #c8c8d8;
+        color: #374151;
         font-size: 0.9rem;
         text-transform: uppercase;
         letter-spacing: 0.5px;
@@ -93,9 +93,9 @@
 
     .form-control {
         border-radius: 8px !important;
-        border: 1px solid #3d3d4e !important;
-        background-color: #15151e !important;
-        color: #ffffff !important;
+        border: 1px solid #d1d5db !important;
+        background-color: #ffffff !important;
+        color: #111827 !important;
         padding: 10px 15px;
         height: auto;
     }
@@ -106,12 +106,11 @@
     }
 
     select.form-control option {
-        background-color: #1f1f27;
-        color: #ffffff;
+        background-color: #ffffff;
+        color: #111827;
     }
 
-    .btn-f1 {
-        background-color: #e10600;
+    .btn-f1 { background-color: #e10600;
         border-color: #e10600;
         color: #ffffff;
         font-weight: 700;
@@ -122,8 +121,7 @@
         margin-top: 15px;
     }
 
-    .btn-f1:hover {
-        background-color: #b80500;
+    .btn-f1:hover { background-color: #b80500;
         border-color: #b80500;
         color: #ffffff;
         box-shadow: 0 0 10px rgba(225, 6, 0, 0.3);
@@ -173,7 +171,7 @@
     
     <div class="form-card">
         <h2>Cadastrar Nova Escuderia</h2>
-        <p class="text-white-50 mb-4">Insira os dados da escuderia. Ao cadastrar, uma credencial em USERS será gerada com o login <strong>referência_c</strong> e a senha padrão igual à <strong>referência</strong>.</p>
+        <p class="text-muted mb-4">Insira os dados da escuderia. Ao cadastrar, uma credencial em USERS será gerada com o login <strong>referência_c</strong> e a senha padrão igual à <strong>referência</strong>.</p>
         
         {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
